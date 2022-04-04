@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <item
+            android:id="@+id/Weather"
+             android:icon="@drawable/ic_baseline_filter_drama_24"
+            android:title="@string/weather"  />
+        <item
+            android:id="@+id/Favourite"
+            android:icon="@drawable/ic_baseline_favorite_border_24"
+            android:title="@string/favourite" />
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/ic_baseline_settings_24"
+            android:title="@string/setting" />
+    <item
+        android:id="@+id/Alarms"
+        android:icon="@drawable/ic_baseline_notifications_24"
+        android:title="@string/alarms" />
+
+</menu>
