@@ -1,7 +1,5 @@
-package com.example.weathery.map
+package com.example.weathery.location.view
 
-import android.app.Activity
-import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
 import androidx.fragment.app.Fragment
@@ -12,8 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import android.widget.Toast.LENGTH_LONG
+import androidx.fragment.app.FragmentResultListener
 import com.example.weathery.R
+import com.example.weathery.favourite.view.FavouriteFragment
 import com.example.weathery.model.Utilitis
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -38,9 +37,14 @@ class MapsFragment : Fragment() , OnMapReadyCallback, GoogleMap.OnMarkerClickLis
     lateinit var searchButton: ImageButton
     private lateinit var myLongitude: String
     private lateinit var myLat: String
+    private lateinit var type: String
+     private lateinit var tv:TextView
+     private lateinit var okBtn:ImageButton
+    companion object{
 
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+   /* override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         myLat = requireArguments().getString("lat")!!
        myLongitude = requireArguments().getString("long")!!
@@ -51,7 +55,7 @@ class MapsFragment : Fragment() , OnMapReadyCallback, GoogleMap.OnMarkerClickLis
            myLat = it.getString("lat")
            Log.i("TAG",myLat+"mylongfrm mappppppppp")
         }*/
-    }
+    }*/
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,6 +65,33 @@ class MapsFragment : Fragment() , OnMapReadyCallback, GoogleMap.OnMarkerClickLis
         val v=inflater.inflate(R.layout.fragment_maps, container, false)
         txtSearch=v.findViewById(R.id.EditTextSearch)
         txtLocation=v.findViewById(R.id.textLocation)
+         okBtn=v.findViewById(R.id.okButton)
+         parentFragmentManager.setFragmentResultListener("favourite",this, FragmentResultListener {
+                 requestKey, result ->type =result.getString("fav","myfav")
+             if(type.equals("fav")){
+
+                 okBtn.setOnClickListener {
+                     val transaction = activity?.supportFragmentManager?.beginTransaction()
+                     val args = Bundle()
+                     args.putString("area",returnLocationToHome)
+                     args.putString("lat",myLat)
+                     args.putString("long",myLongitude)
+                     parentFragmentManager.setFragmentResult("map",args)
+                     transaction?.addToBackStack(null)?.replace(R.id.container, FavouriteFragment())
+                     transaction?.commit()
+                 }
+
+             }
+
+             Log.i("TAG",type+"favou")})
+
+
+
+        parentFragmentManager.setFragmentResultListener("setting",this, FragmentResultListener {
+                requestKey, result -> type =result.getString("set","myset")
+           myLat=result.getString("lat","myset")
+           // tv.setText(type)
+            Log.i("TAG",type+"setting"+myLat)})
 
        // myLongitude = arguments?.getString("long")
       //  Log.i("TAG",myLongitude+"mylong")

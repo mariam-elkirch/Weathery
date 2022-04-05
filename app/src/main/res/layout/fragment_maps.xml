@@ -16,9 +16,9 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:paddingStart="40dp"
-            android:paddingEnd="5dp"
+            android:paddingEnd="40dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/okButton"
             android:background="@drawable/tv_shape"
             app:layout_constraintStart_toEndOf="@+id/searchButton"
             android:hint="@string/where_are_you_going" tools:ignore="RtlCompat"/>
@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:paddingStart="20dp"
-            android:paddingEnd="5dp"
+            android:paddingEnd="20dp"
             android:textSize="15dp"
             android:ellipsize="end"
             android:maxLines="1"
@@ -47,6 +47,16 @@
             android:layout_marginStart="5dp"
             android:background="@drawable/ic_magnifying_glass"
             tools:ignore="RtlCompat"/>
+        <ImageButton android:id="@+id/okButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/EditTextSearch"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/EditTextSearch"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/ic_baseline_bookmark_24"
+            tools:ignore="RtlCompat"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <fragment
         android:id="@+id/map"
@@ -55,11 +65,24 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:context=".map.MapsFragment">
+        tools:context=".location.view.MapsFragment">
 
     </fragment>
+    <!--
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/m"
+    app:layout_constraintBottom_toBottomOf="@id/map"
+    app:layout_constraintStart_toStartOf="parent"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/tv"
+        app:layout_constraintStart_toStartOf="parent"></TextView>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
+-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

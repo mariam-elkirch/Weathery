@@ -1,11 +1,20 @@
 package com.example.weathery.favourite.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentResultListener
 import com.example.weathery.R
+import com.example.weathery.location.view.MapsFragment
+
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+
+
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,8 +43,24 @@ class FavouriteFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        var view=inflater.inflate(R.layout.fragment_favourite, container, false)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favourite, container, false)
+        val fabb: FloatingActionButton = view.findViewById(R.id.fab)
+        fabb.setOnClickListener {
+
+            val transaction = activity?.supportFragmentManager?.beginTransaction()
+            val args = Bundle()
+            args.putString("fav","fav")
+            parentFragmentManager.setFragmentResult("favourite",args)
+            transaction?.addToBackStack(null)?.add(R.id.container, MapsFragment())
+            transaction?.commit()
+        }
+        parentFragmentManager.setFragmentResultListener("map",this, FragmentResultListener {
+                requestKey, result -> var type:String =result.getString("area","myset")
+                    var long:String=result.getString("long","mylong")
+            var lat:String=result.getString("lat","mylong")
+            Log.i("TAG",type+"setting"+long+" "+lat)})
+        return view
     }
 
     companion object {

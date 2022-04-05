@@ -3,11 +3,9 @@ package com.example.weathery.home.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import com.example.weathery.R
 import com.example.weathery.alarm.view.AlarmFragment
 import com.example.weathery.favourite.view.FavouriteFragment
-import com.example.weathery.map.MapsFragment
 import com.example.weathery.setting.view.SettingFragment
 
 import com.google.android.material.bottomnavigation.BottomNavigationView

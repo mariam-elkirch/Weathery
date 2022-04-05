@@ -1,7 +1,8 @@
-package com.example.weathery.map
+package com.example.weathery.location.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import com.example.weathery.location.viewmodel.LocationLiveData
 
 class LocationViewModel (application: Application) : AndroidViewModel(application) {
 

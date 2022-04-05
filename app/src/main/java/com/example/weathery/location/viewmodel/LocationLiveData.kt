@@ -1,7 +1,6 @@
-package com.example.weathery.map
+package com.example.weathery.location.viewmodel
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.content.Context
 import android.location.Location
 import androidx.lifecycle.LiveData
@@ -62,7 +61,7 @@ class LocationLiveData(context: Context) : LiveData<LocationDetails>() {
         val ONE_MINUTE : Long = 60000
         val locationRequest : LocationRequest = LocationRequest.create().apply {
             interval = ONE_MINUTE
-            fastestInterval = ONE_MINUTE/4
+            fastestInterval = ONE_MINUTE /4
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
 

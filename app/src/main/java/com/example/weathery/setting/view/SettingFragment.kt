@@ -1,7 +1,6 @@
 package com.example.weathery.setting.view
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -13,16 +12,11 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.location.LocationManagerCompat.requestLocationUpdates
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.weathery.R
-import com.example.weathery.home.view.Communicator
-import com.example.weathery.map.LocationViewModel
-import com.example.weathery.map.MapsFragment
-import java.util.Observer
-
-
-
+import com.example.weathery.location.viewmodel.LocationViewModel
+import com.example.weathery.location.view.MapsFragment
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -40,8 +34,9 @@ class SettingFragment : Fragment() {
     lateinit var locationViewModel: LocationViewModel
    lateinit var radio_group: RadioGroup
    // private lateinit var comm: Communicator
-   var mylong:String = ""
-    var mylat:String = ""
+   val mylong = MutableLiveData<String>()
+
+    var mylat= MutableLiveData<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -87,8 +82,8 @@ class SettingFragment : Fragment() {
         locationViewModel.getLocationLiveData().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
              it.latitude
             it.longitude
-            mylat=it.latitude
-            mylong=it.longitude
+            mylat.value=it.latitude
+            mylong.value=it.longitude
            // comm.passDataCom( it.longitude,  it.latitude)
             Log.i("TAG",it.latitude+"  "+it.longitude)
               })
@@ -113,15 +108,25 @@ class SettingFragment : Fragment() {
         }
     }
     fun goToMapFragment(){
-        val ldf = MapsFragment()
-        val args = Bundle()
-        args.putString("long",mylong)
-        args.putString("lat",mylat)
-        ldf.setArguments(args)
 
+     /*   val transaction = activity?.supportFragmentManager?.beginTransaction()
+        val args = Bundle()
+        args.putString("fav","fav")
+        parentFragmentManager.setFragmentResult("favourite",args)
+        transaction?.addToBackStack(null)?.add(R.id.container, MapsFragment())
+        transaction?.commit()*/
+
+
+
+
+        val args = Bundle()
+        args.putString("long",mylong.value)
+        args.putString("lat",mylat.value)
+        args.putString("set","set")
         val transaction = activity?.supportFragmentManager?.beginTransaction()
 
-        transaction?.addToBackStack(null)?.add(R.id.container, ldf)
+        parentFragmentManager.setFragmentResult("setting",args)
+        transaction?.addToBackStack(null)?.add(R.id.container, MapsFragment())
         transaction?.commit()
     }
 
