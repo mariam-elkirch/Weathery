@@ -80,9 +80,9 @@ class FavouriteFragment : Fragment() {
         }
         parentFragmentManager.setFragmentResultListener("map",this, FragmentResultListener {
                 requestKey, result -> var type:String =result.getString("area","myset")
-                    var long:String=result.getString("long","mylong")
-            var lat:String=result.getString("lat","mylong")
-            var fav=Favourite(type,lat,long)
+                    val long:String=result.getString("long","mylong")
+            val lat:String=result.getString("lat","mylong")
+            val fav=Favourite(type,long,lat,"")
             viewModel.insertFav(fav)
             Log.i("TAG",type+"setting"+long+" "+lat)})
         return view

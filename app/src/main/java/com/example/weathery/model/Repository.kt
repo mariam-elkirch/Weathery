@@ -1,6 +1,7 @@
 package com.example.weathery.model
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.weathery.db.LocalSource
 import com.example.weathery.network.RemoteSource
@@ -23,6 +24,7 @@ class Repository private constructor(
     }
 
     override suspend fun insertFav(item: Favourite) {
+        Log.i("TAG",item.long+"repo")
       localSource.insertFav(item)
     }
 

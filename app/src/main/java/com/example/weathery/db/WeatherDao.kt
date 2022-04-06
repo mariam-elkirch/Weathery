@@ -7,7 +7,7 @@ import com.example.weathery.model.Favourite
 
 @Dao
 interface WeatherDao {
-    @Query("SELECT * From fav")
+    @Query("SELECT * From favourite")
     fun getAllFavourite(): LiveData<List<Favourite>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

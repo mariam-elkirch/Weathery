@@ -8,7 +8,7 @@ import com.example.weathery.db.WeatherDao
 
 import com.example.weathery.model.Favourite
 
-@Database(entities = [Favourite::class], version = 2)
+@Database(entities = [Favourite::class], version =13)
 open abstract class FavDataBase: RoomDatabase() {
     abstract fun movieDao(): WeatherDao?
     companion object{
@@ -19,7 +19,7 @@ open abstract class FavDataBase: RoomDatabase() {
         return instance?:Room.databaseBuilder(
             context.applicationContext,
             FavDataBase::class.java, "weathery"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
 
     }
 }}

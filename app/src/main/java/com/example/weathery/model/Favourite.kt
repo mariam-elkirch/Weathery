@@ -5,16 +5,21 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "fav")
+@Entity(tableName = "favourite")
 data class Favourite(
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "location")
-    var location: String="",
+    var location: String,
+
+    @ColumnInfo(name = "longitude")
+    var long :String,
 
     @ColumnInfo(name = "lat")
-    var lat :String="",
+    var lat :String,
 
-    @ColumnInfo(name = "long")
-    var long :String=""
-    )
+    @ColumnInfo(name = "latt")
+var latt :String
+    ){
+    constructor() :this("","","","")
+}
