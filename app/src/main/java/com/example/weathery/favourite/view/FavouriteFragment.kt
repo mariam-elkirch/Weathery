@@ -1,5 +1,6 @@
 package com.example.weathery.favourite.view
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,11 +8,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentResultListener
+import androidx.lifecycle.ViewModelProvider
+//import androidx.test.core.app.ApplicationProvider
 import com.example.weathery.R
+import com.example.weathery.db.ConcreteLocalSource
 import com.example.weathery.location.view.MapsFragment
+import com.example.weathery.model.Favourite
+import com.example.weathery.model.Repository
+import com.example.weathery.network.ApiManager
+import com.example.weathery.network.Client
 
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+//import androidx.test.core.app.ApplicationProvider.getApplicationContext
+
+
+
 
 
 
@@ -27,10 +39,13 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class FavouriteFragment : Fragment() {
-    // TODO: Rename and change types of parameters
+   // var appContext: Context = ApplicationProvider
+   var contextt: Context? = null
+
     private var param1: String? = null
     private var param2: String? = null
-
+    lateinit var viewModel: FavouriteViewModel
+    lateinit var allmoviesfactory:FavouriteViewModelFactory
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -44,7 +59,15 @@ class FavouriteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         var view=inflater.inflate(R.layout.fragment_favourite, container, false)
+        contextt=container?.context
         // Inflate the layout for this fragment
+        allmoviesfactory= FavouriteViewModelFactory(
+            Repository.getInstance(
+                Client.getInstance(),
+                ConcreteLocalSource(contextt!!),
+                contextt!!
+            ))
+        viewModel= ViewModelProvider(this,allmoviesfactory).get(FavouriteViewModel::class.java)
         val fabb: FloatingActionButton = view.findViewById(R.id.fab)
         fabb.setOnClickListener {
 
@@ -59,6 +82,8 @@ class FavouriteFragment : Fragment() {
                 requestKey, result -> var type:String =result.getString("area","myset")
                     var long:String=result.getString("long","mylong")
             var lat:String=result.getString("lat","mylong")
+            var fav=Favourite(type,lat,long)
+            viewModel.insertFav(fav)
             Log.i("TAG",type+"setting"+long+" "+lat)})
         return view
     }
