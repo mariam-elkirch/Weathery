@@ -7,5 +7,5 @@ import com.example.weathery.model.Favourite
 interface LocalSource {
     suspend fun insertFav(fav:Favourite)
     suspend fun deleteFav(fav: Favourite)
-     fun getAllFavourite(): LiveData<List<Favourite>>
+    fun getAllFavourite(): LiveData<List<Favourite>>
 }

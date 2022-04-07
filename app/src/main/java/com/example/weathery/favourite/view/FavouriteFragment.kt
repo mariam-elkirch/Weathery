@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 //import androidx.test.core.app.ApplicationProvider
 import com.example.weathery.R
 import com.example.weathery.db.ConcreteLocalSource
@@ -38,9 +40,11 @@ private const val ARG_PARAM2 = "param2"
  * Use the [FavouriteFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FavouriteFragment : Fragment() {
+class FavouriteFragment : Fragment() ,OnFavClickListener{
    // var appContext: Context = ApplicationProvider
    var contextt: Context? = null
+    lateinit var recyclerView: RecyclerView
+    lateinit var favMoviesAdapter: FavouriteAdapter
 
     private var param1: String? = null
     private var param2: String? = null
@@ -60,6 +64,14 @@ class FavouriteFragment : Fragment() {
     ): View? {
         var view=inflater.inflate(R.layout.fragment_favourite, container, false)
         contextt=container?.context
+        recyclerView=view.findViewById(R.id.recycler_view)
+        favMoviesAdapter = context?.let { FavouriteAdapter(this, it) }!!
+
+        val linearLayoutManager = LinearLayoutManager(context)
+        linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
+        recyclerView.layoutManager = linearLayoutManager
+        recyclerView.adapter = favMoviesAdapter
+
         // Inflate the layout for this fragment
         allmoviesfactory= FavouriteViewModelFactory(
             Repository.getInstance(
@@ -85,6 +97,12 @@ class FavouriteFragment : Fragment() {
             val fav=Favourite(type,long,lat,"")
             viewModel.insertFav(fav)
             Log.i("TAG",type+"setting"+long+" "+lat)})
+        viewModel.getAllFav().observe(viewLifecycleOwner){ favourites ->
+            if(favourites != null)
+               // Log.i("TAG",favourites.get(0).location+"inside favourite")
+                favMoviesAdapter.setMovieList(favourites)
+            favMoviesAdapter.notifyDataSetChanged()
+        }
         return view
     }
 
@@ -106,5 +124,9 @@ class FavouriteFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onClick(favourite: Favourite) {
+       Log.i("TAG","Favourite Click")
     }
 }

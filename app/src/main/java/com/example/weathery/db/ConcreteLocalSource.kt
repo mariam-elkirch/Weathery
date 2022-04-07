@@ -10,7 +10,7 @@ import com.example.weathery.model.Favourite
 class  ConcreteLocalSource (context: Context) : LocalSource {
     private var dao: WeatherDao? = null
     var favourites: LiveData<List<Favourite>>
-     lateinit var storedFav: LiveData<List<Favourite>>
+
     init {
         val db: FavDataBase? = FavDataBase.getInstance(context!!.applicationContext)
         dao = db?.movieDao()
@@ -34,8 +34,8 @@ class  ConcreteLocalSource (context: Context) : LocalSource {
         dao?.deleteFav(fav)
     }
 
-    override fun getAllFavourite(): LiveData<List<Favourite>> {
-        return  storedFav
+    override  fun getAllFavourite(): LiveData<List<Favourite>> {
+        return  favourites
     }
 
 }

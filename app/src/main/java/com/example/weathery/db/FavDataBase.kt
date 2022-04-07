@@ -8,7 +8,7 @@ import com.example.weathery.db.WeatherDao
 
 import com.example.weathery.model.Favourite
 
-@Database(entities = [Favourite::class], version =13)
+@Database(entities = [Favourite::class], version =14)
 open abstract class FavDataBase: RoomDatabase() {
     abstract fun movieDao(): WeatherDao?
     companion object{

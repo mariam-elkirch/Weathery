@@ -33,6 +33,6 @@ class Repository private constructor(
     }
 
     override fun getAllFavourite(): LiveData<List<Favourite>> {
-        TODO("Not yet implemented")
+      return  localSource.getAllFavourite()
     }
 }
