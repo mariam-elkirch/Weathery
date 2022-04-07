@@ -8,4 +8,11 @@
     <string name="alarms">Alarms</string>
     <string name="Location">Location</string>
     <string name="where_are_you_going">where are you going?</string>
+    <string name="TemperatureWindspeed"><![CDATA[Temperature & Wind Speed]]></string>
+    <string name="imperical">Temperature in Ferinheit and wind speed in miles/hour</string>
+    <string name="metric">Temperature in celesius and wind speed in meters/sec</string>
+    <string name="standard">Temperature in Kelvin and Wind speed in meter/sec</string>
+    <string name="Language">Language</string>
+    <string name="english">english</string>
+    <string name="arabic">arabic</string>
 </resources>

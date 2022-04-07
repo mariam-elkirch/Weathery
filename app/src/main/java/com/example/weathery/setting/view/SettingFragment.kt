@@ -1,6 +1,8 @@
 package com.example.weathery.setting.view
 
 import android.Manifest
+import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -30,10 +32,16 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class SettingFragment : Fragment() {
+    val CUSTOM_PREF_NAME = "Setting"
+
     private val LOCATION_PERMISSION_REQUEST_CODE: Int=200
     lateinit var locationViewModel: LocationViewModel
    lateinit var radio_group: RadioGroup
-   // private lateinit var comm: Communicator
+    lateinit var radio_group_temp: RadioGroup
+    lateinit var radio_group_lang: RadioGroup
+    lateinit var sharedPreferences: SharedPreferences
+    lateinit var editor:SharedPreferences.Editor
+
    val mylong = MutableLiveData<String>()
 
     var mylat= MutableLiveData<String>()
@@ -51,7 +59,13 @@ class SettingFragment : Fragment() {
         val view=inflater.inflate(R.layout.fragment_setting, container, false)
        // private lateinit var communicator: Communicator
        // comm = requireActivity() as Communicator
+       sharedPreferences = requireContext().getSharedPreferences(CUSTOM_PREF_NAME,
+            Context.MODE_PRIVATE)
+        editor =  sharedPreferences.edit()
+
         radio_group=view.findViewById(R.id.radio_group)
+        radio_group_temp=view.findViewById(R.id.radio_group_temp)
+        radio_group_lang=view.findViewById(R.id.radio_group_lang)
         radio_group.setOnCheckedChangeListener(
             RadioGroup.OnCheckedChangeListener { group, checkedId ->
                 val radio: RadioButton =view.findViewById(checkedId)
@@ -66,7 +80,45 @@ class SettingFragment : Fragment() {
                             " ${radio.text}",
                         Toast.LENGTH_SHORT).show()*/
             })
+        radio_group_temp.setOnCheckedChangeListener(
+            RadioGroup.OnCheckedChangeListener { group, checkedId ->
+                val radio: RadioButton =view.findViewById(checkedId)
+                if(radio.text.equals("Temperature in Ferinheit and wind speed in miles/hour")){
+                    editor.putString("units","imperical")
+                    editor.apply()
+                    editor.commit()
+                }
 
+                if(radio.text.equals("Temperature in celesius and wind speed in meters/sec")){
+                    editor.putString("units","metric")
+                    editor.apply()
+                    editor.commit()
+                }
+                if(radio.text.equals("Temperature in Kelvin and Wind speed in meter/sec")){
+                    editor.putString("units","standard")
+                    editor.apply()
+                    editor.commit()
+                }
+            })
+        radio_group_lang.setOnCheckedChangeListener(
+            RadioGroup.OnCheckedChangeListener { group, checkedId ->
+                val radio: RadioButton =view.findViewById(checkedId)
+                if(radio.text.equals("english")){
+                    editor.putString("language","english")
+                    editor.apply()
+                    editor.commit()
+                }
+
+                if(radio.text.equals("arabic")){
+                    editor.putString("language","arabic")
+                    editor.apply()
+                    editor.commit()
+                }
+
+            })
+
+        val sharedNameValue = sharedPreferences.getString("language","defaultname")
+        Log.i("TAG",sharedNameValue+"My Shared Prefrence")
         return view
     }
     private fun prepRequestLocationUpdates() {
@@ -84,6 +136,10 @@ class SettingFragment : Fragment() {
             it.longitude
             mylat.value=it.latitude
             mylong.value=it.longitude
+            editor.putString("latitude",it.latitude)
+            editor.putString("longitude",it.longitude)
+            editor.apply()
+            editor.commit()
            // comm.passDataCom( it.longitude,  it.latitude)
             Log.i("TAG",it.latitude+"  "+it.longitude)
               })
@@ -108,16 +164,6 @@ class SettingFragment : Fragment() {
         }
     }
     fun goToMapFragment(){
-
-     /*   val transaction = activity?.supportFragmentManager?.beginTransaction()
-        val args = Bundle()
-        args.putString("fav","fav")
-        parentFragmentManager.setFragmentResult("favourite",args)
-        transaction?.addToBackStack(null)?.add(R.id.container, MapsFragment())
-        transaction?.commit()*/
-
-
-
 
         val args = Bundle()
         args.putString("long",mylong.value)

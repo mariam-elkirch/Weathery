@@ -1,5 +1,7 @@
 package com.example.weathery.location.view
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.location.Address
 import android.location.Geocoder
 import androidx.fragment.app.Fragment
@@ -40,6 +42,9 @@ class MapsFragment : Fragment() , OnMapReadyCallback, GoogleMap.OnMarkerClickLis
     private lateinit var type: String
      private lateinit var tv:TextView
      private lateinit var okBtn:ImageButton
+    val CUSTOM_PREF_NAME = "Setting"
+    lateinit var sharedPreferences: SharedPreferences
+    lateinit var editor:SharedPreferences.Editor
     companion object{
 
     }
@@ -66,10 +71,16 @@ class MapsFragment : Fragment() , OnMapReadyCallback, GoogleMap.OnMarkerClickLis
         txtSearch=v.findViewById(R.id.EditTextSearch)
         txtLocation=v.findViewById(R.id.textLocation)
          okBtn=v.findViewById(R.id.okButton)
+        okBtn.visibility=View.GONE
+
+       sharedPreferences = requireContext().getSharedPreferences(CUSTOM_PREF_NAME,
+            Context.MODE_PRIVATE)
+      editor =  sharedPreferences.edit()
+
          parentFragmentManager.setFragmentResultListener("favourite",this, FragmentResultListener {
                  requestKey, result ->type =result.getString("fav","myfav")
              if(type.equals("fav")){
-
+                 okBtn.visibility=View.VISIBLE
                  okBtn.setOnClickListener {
                      val transaction = activity?.supportFragmentManager?.beginTransaction()
                      val args = Bundle()
@@ -91,6 +102,7 @@ class MapsFragment : Fragment() , OnMapReadyCallback, GoogleMap.OnMarkerClickLis
                 requestKey, result -> type =result.getString("set","myset")
            myLat=result.getString("lat","myset")
            // tv.setText(type)
+
             Log.i("TAG",type+"setting"+myLat)})
 
        // myLongitude = arguments?.getString("long")
@@ -168,6 +180,10 @@ class MapsFragment : Fragment() , OnMapReadyCallback, GoogleMap.OnMarkerClickLis
         returnLocationToHome = titleStr!!
         myLat= location.latitude.toString()
         myLongitude=location.longitude.toString()
+        editor.putString("latitude",myLat)
+        editor.putString("longitude",myLongitude)
+        editor.apply()
+        editor.commit()
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 12f))
         Log.i("TAG", " " + returnLocationToHome + " ")
 
@@ -197,6 +213,8 @@ class MapsFragment : Fragment() , OnMapReadyCallback, GoogleMap.OnMarkerClickLis
        }
    }
     override fun onClick(v: View?) {
+        val sharedNameValue = sharedPreferences.getString("language","defaultname")
+        Log.i("TAG",sharedNameValue+"My Shared Prefrence")
         when (v?.id) {
             R.id.searchButton -> {
                searchLocation(v)

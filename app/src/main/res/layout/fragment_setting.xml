@@ -15,15 +15,12 @@
     <androidx.cardview.widget.CardView
      app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
-        android:id="@+id/cvHomeMedicationItem"
+        android:id="@+id/cvLocation"
         android:layout_height="wrap_content"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_margin="10dp"
         android:orientation="vertical"
         app:cardCornerRadius="20dp">
-
-
-
             <RadioGroup
                 android:id="@+id/radio_group"
                 android:layout_width="match_parent"
@@ -41,14 +38,14 @@
                     android:textSize="20sp"/>
 
                 <RadioButton
-                    android:id="@+id/red"
+                    android:id="@+id/gps_radiobtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="GPS"
                   />
 
                 <RadioButton
-                    android:id="@+id/green"
+                    android:id="@+id/map_radiobtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="MAP"
@@ -59,8 +56,100 @@
 
 
 
-
     </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            app:layout_constraintTop_toBottomOf="@+id/cvLocation"
+            android:layout_width="match_parent"
+            android:id="@+id/cvTemp"
+            android:layout_height="wrap_content"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_margin="10dp"
+            android:orientation="vertical"
+            app:cardCornerRadius="20dp">
+            <RadioGroup
+                android:id="@+id/radio_group_temp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#dbeceb"
+                android:padding="15dp"
+                >
+
+                <TextView
+                    android:id="@+id/temp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/TemperatureWindspeed"
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+
+                <RadioButton
+                    android:id="@+id/imperical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/imperical"
+                    />
+
+                <RadioButton
+                    android:id="@+id/metric"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/metric"
+                    />
+                <RadioButton
+                    android:id="@+id/standard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/standard"
+                    />
+
+            </RadioGroup>
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            app:layout_constraintTop_toBottomOf="@id/cvTemp"
+            android:layout_width="match_parent"
+            android:id="@+id/cvLanguage"
+            android:layout_height="wrap_content"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_margin="10dp"
+            android:orientation="vertical"
+            app:cardCornerRadius="20dp">
+            <RadioGroup
+                android:id="@+id/radio_group_lang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#dbeceb"
+                android:padding="15dp"
+                >
+
+                <TextView
+                    android:id="@+id/lang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Language"
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+
+                <RadioButton
+                    android:id="@+id/english_radiobtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/english"
+                    />
+
+                <RadioButton
+                    android:id="@+id/arabic_radiobtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/arabic"
+                    />
+
+            </RadioGroup>
+
+
+
+
+        </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
