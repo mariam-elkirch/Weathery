@@ -1,13 +1,23 @@
-package com.example.weathery.favourite.view
+package com.example.weathery.favouritedetails.view
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.FragmentResultListener
+import androidx.lifecycle.ViewModelProvider
 import com.example.weathery.R
+import com.example.weathery.db.ConcreteLocalSource
+import com.example.weathery.favouritedetails.viewmodel.FavDetailsViewModel
+import com.example.weathery.favouritedetails.viewmodel.FavDetailsViewModelFactory
+import com.example.weathery.home.viewmodel.HomeViewModel
+import com.example.weathery.home.viewmodel.HomeViewModelFactory
+import com.example.weathery.model.Repository
+import com.example.weathery.network.Client
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,7 +30,9 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class FavouriteDetailsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
+    var contextt: Context? = null
+    lateinit var viewModel: FavDetailsViewModel
+    lateinit var favdetailsfactory: FavDetailsViewModelFactory
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var longitudeFavourite: String
@@ -42,6 +54,22 @@ class FavouriteDetailsFragment : Fragment() {
                 requestKey, result -> longitudeFavourite =result.getString("favlong","myset")
             latitudeFavourite=result.getString("favlat","myset")
             // tv.setText(type)
+            contextt=container?.context
+           favdetailsfactory= FavDetailsViewModelFactory(
+                Repository.getInstance(
+                    Client.getInstance(),
+                    ConcreteLocalSource(contextt!!),
+                    contextt!!
+                ), contextt!!
+            )
+            viewModel= ViewModelProvider(this,favdetailsfactory).get(FavDetailsViewModel::class.java)
+            viewModel.weatherResponce.observe(requireActivity(), {
+                Log.i("TAG","Hi from fav details"+it.daily)
+            })
+
+            viewModel.errorMessage.observe(requireActivity(), {
+                Toast.makeText(contextt, it, Toast.LENGTH_SHORT).show()
+            })
 
             Log.i("TAG",latitudeFavourite+"Favourite Details"+longitudeFavourite)})
         // Inflate the layout for this fragment

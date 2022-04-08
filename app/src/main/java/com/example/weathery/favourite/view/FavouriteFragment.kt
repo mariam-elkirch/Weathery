@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 //import androidx.test.core.app.ApplicationProvider
 import com.example.weathery.R
 import com.example.weathery.db.ConcreteLocalSource
+import com.example.weathery.favouritedetails.view.FavouriteDetailsFragment
 import com.example.weathery.location.view.MapsFragment
 import com.example.weathery.model.Favourite
 import com.example.weathery.model.Repository
