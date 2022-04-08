@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.weathery.db.LocalSource
 import com.example.weathery.network.RemoteSource
+import retrofit2.Response
 
 class Repository private constructor(
     var remoteSource: RemoteSource,
@@ -34,5 +35,9 @@ class Repository private constructor(
 
     override fun getAllFavourite(): LiveData<List<Favourite>> {
       return  localSource.getAllFavourite()
+    }
+
+    override suspend fun getWearherNetwork(lat:String,long:String,units:String,language:String): Response<Weather2> {
+        return remoteSource.getWeatherOverNetwork(lat,long,units,language)
     }
 }

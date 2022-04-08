@@ -9,4 +9,5 @@ interface RepositoryInterface {
     suspend fun insertFav(item:Favourite)
     suspend fun deleteFav(item:Favourite)
     fun getAllFavourite(): LiveData<List<Favourite>>
+    suspend fun getWearherNetwork(lat:String,long:String,units:String,language:String): Response<Weather2>
 }

@@ -1,11 +1,22 @@
 package com.example.weathery.home.view
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.example.weathery.R
+import com.example.weathery.db.ConcreteLocalSource
+import com.example.weathery.favourite.view.FavouriteViewModel
+import com.example.weathery.favourite.view.FavouriteViewModelFactory
+import com.example.weathery.home.viewmodel.HomeViewModel
+import com.example.weathery.home.viewmodel.HomeViewModelFactory
+import com.example.weathery.model.Repository
+import com.example.weathery.network.Client
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,7 +32,9 @@ class WeatherFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
+    var contextt: Context? = null
+    lateinit var viewModel: HomeViewModel
+    lateinit var allweatherfactory: HomeViewModelFactory
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -34,8 +47,33 @@ class WeatherFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_weather, container, false)
+       var view=inflater.inflate(R.layout.fragment_weather, container, false)
+        contextt=container?.context
+        allweatherfactory= HomeViewModelFactory(
+            Repository.getInstance(
+                Client.getInstance(),
+                ConcreteLocalSource(contextt!!),
+                contextt!!
+            ), contextt!!
+        )
+        viewModel= ViewModelProvider(this,allweatherfactory).get(HomeViewModel::class.java)
+        viewModel.weatherResponce.observe(requireActivity(), {
+            Log.i("TAG",it.current.toString())
+        })
+
+        viewModel.errorMessage.observe(requireActivity(), {
+            Toast.makeText(contextt, it, Toast.LENGTH_SHORT).show()
+        })
+
+        /*viewModel.loading.observe(this, Observer {
+            if (it) {
+                binding.progressDialog.visibility = View.VISIBLE
+            } else {
+                binding.progressDialog.visibility = View.GONE
+            }
+        })*/
+
+        return view
     }
 
     companion object {

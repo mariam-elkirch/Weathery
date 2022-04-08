@@ -8,9 +8,17 @@ data class Weather2(
 	val lon: Double? = null,
 	val hourly: List<HourlyItem?>? = null,
 	val minutely: List<MinutelyItem?>? = null,
-	val lat: Double? = null
+	val lat: Double? = null,
+	val alerts: List<Alerts>?=null
 )
-
+data class Alerts(
+	var sender_name:String?=null,
+	var event: String?=null,
+	var start:Int?=null,
+	var end:Int?=null,
+	var description: String?=null,
+	var tags:ArrayList<String> = arrayListOf(),
+)
 data class DailyItem(
 	val moonset: Int? = null,
 	val sunrise: Int? = null,

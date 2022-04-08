@@ -49,7 +49,7 @@ class FavouriteFragment : Fragment() ,OnFavClickListener{
     private var param1: String? = null
     private var param2: String? = null
     lateinit var viewModel: FavouriteViewModel
-    lateinit var allmoviesfactory:FavouriteViewModelFactory
+    lateinit var allfavouritefactory:FavouriteViewModelFactory
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -73,13 +73,13 @@ class FavouriteFragment : Fragment() ,OnFavClickListener{
         recyclerView.adapter = favMoviesAdapter
 
         // Inflate the layout for this fragment
-        allmoviesfactory= FavouriteViewModelFactory(
+        allfavouritefactory= FavouriteViewModelFactory(
             Repository.getInstance(
                 Client.getInstance(),
                 ConcreteLocalSource(contextt!!),
                 contextt!!
             ))
-        viewModel= ViewModelProvider(this,allmoviesfactory).get(FavouriteViewModel::class.java)
+        viewModel= ViewModelProvider(this,allfavouritefactory).get(FavouriteViewModel::class.java)
         val fabb: FloatingActionButton = view.findViewById(R.id.fab)
         fabb.setOnClickListener {
 
