@@ -128,5 +128,12 @@ class FavouriteFragment : Fragment() ,OnFavClickListener{
 
     override fun onClick(favourite: Favourite) {
        Log.i("TAG","Favourite Click")
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
+        val args = Bundle()
+        args.putString("favlong",favourite.long)
+        args.putString("favlat",favourite.lat)
+        parentFragmentManager.setFragmentResult("itemFav",args)
+        transaction?.addToBackStack(null)?.replace(R.id.container, FavouriteDetailsFragment())
+        transaction?.commit()
     }
 }

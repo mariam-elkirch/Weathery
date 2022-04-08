@@ -58,7 +58,7 @@ class WeatherFragment : Fragment() {
         )
         viewModel= ViewModelProvider(this,allweatherfactory).get(HomeViewModel::class.java)
         viewModel.weatherResponce.observe(requireActivity(), {
-            Log.i("TAG",it.current.toString())
+            Log.i("TAG",it.toString())
         })
 
         viewModel.errorMessage.observe(requireActivity(), {
