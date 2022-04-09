@@ -30,7 +30,7 @@ class Repository private constructor(
     }
 
     override suspend fun deleteFav(item: Favourite) {
-        TODO("Not yet implemented")
+        localSource.deleteFav(item)
     }
 
     override fun getAllFavourite(): LiveData<List<Favourite>> {

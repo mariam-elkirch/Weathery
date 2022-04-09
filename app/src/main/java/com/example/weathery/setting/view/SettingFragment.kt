@@ -72,7 +72,7 @@ class SettingFragment : Fragment() {
                 if(radio.text.equals("GPS"))
                     prepRequestLocationUpdates()
                 if(radio.text.equals("MAP")){
-                    prepRequestLocationUpdates()
+                   // prepRequestLocationUpdates()
                     goToMapFragment()
                 }
 

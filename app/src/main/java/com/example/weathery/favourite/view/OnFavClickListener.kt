@@ -4,4 +4,5 @@ import com.example.weathery.model.Favourite
 
 interface OnFavClickListener {
     fun onClick(favourite: Favourite)
+    fun ondelete(favourite: Favourite)
 }

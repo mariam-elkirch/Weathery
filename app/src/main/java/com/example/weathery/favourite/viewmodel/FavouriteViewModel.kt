@@ -24,7 +24,11 @@ class FavouriteViewModel (iRepo: RepositoryInterface) : ViewModel() {
 
     //Expose returned online Data
   //  val onlineMovies: LiveData<List<Favourite>> = _movieList
-
+    fun deleteFav(favourite: Favourite) {
+        viewModelScope.launch(Dispatchers.IO) {
+           _iRepo.deleteFav(favourite)
+        }
+    }
     fun getAllMovies(){
        /* viewModelScope.launch{
             var favourites = _iRepo.getAllFavourite()

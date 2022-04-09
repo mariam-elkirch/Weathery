@@ -196,7 +196,7 @@ class MapsFragment : Fragment() , OnMapReadyCallback, GoogleMap.OnMarkerClickLis
         mMap = googleMap
         mMap.getUiSettings().setZoomControlsEnabled(true)
         mMap.setOnMarkerClickListener(this)
-        val alex = LatLng(31.2121083, 29.9299856)
+        val alex = LatLng(31.205753, 29.924526)
         placeMarkerOnMap(alex)
 
 

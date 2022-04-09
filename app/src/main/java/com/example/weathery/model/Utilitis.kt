@@ -36,6 +36,30 @@ class Utilitis {
 
             return addressText
         }
+        fun getStringAddress(lat:String?,long:String?,context: Context): String {
+
+            val geocoder = Geocoder(context)
+            val addresses: List<Address>?
+            val address: Address?
+            var addressText = ""
+            val doublelat: Double = lat!!.toDouble()
+            val doublelong: Double = long!!.toDouble()
+
+            try {
+
+                addresses = geocoder.getFromLocation(doublelat, doublelong, 1)
+
+                if (null != addresses && !addresses.isEmpty()) {
+                    address = addresses[0]
+
+                    addressText = address.getAddressLine(0)
+                }
+            } catch (e: IOException) {
+                Log.e("MapsActivity", e.localizedMessage)
+            }
+
+            return addressText
+        }
      fun convertDayToData(dt: Double?):String{
              val date = Date((dt!! *1000).toLong())
              val format = SimpleDateFormat("EEE",Locale.ENGLISH)

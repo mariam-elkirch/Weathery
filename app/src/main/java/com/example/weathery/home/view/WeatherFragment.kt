@@ -30,6 +30,7 @@ import com.example.weathery.model.Repository
 import com.example.weathery.model.Utilitis
 import com.example.weathery.network.Client
 import com.example.weathery.setting.view.SettingFragment
+import com.google.android.gms.maps.model.LatLng
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -136,8 +137,9 @@ class WeatherFragment : Fragment() {
              Log.i("TAG", "Observationnnnnnnnnnnnnnnnnnnnnnnnnnnnn: ${mywheather}")
             // Log.i("TAG","Hi from fav details"+mywheather.)
              if(mywheather.size!=0){
+               var local=Utilitis.getStringAddress(sharedlat,sharedlong,requireContext())
              temperature.setText(mywheather.get(0).current?.temp.toString())
-            // locality.setText(locationFavourite)
+             locality.setText(local)
              var dt=Utilitis.convertDTtoHour(mywheather.get(0).current?.dt)
              var url = "https://openweathermap.org/img/wn/${mywheather.get(0).current?.weather?.get(0)?.icon}@2x.png"
              todaydate.setText(dt)

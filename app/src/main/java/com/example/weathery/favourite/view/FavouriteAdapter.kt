@@ -34,7 +34,7 @@ RecyclerView.Adapter<ViewHolder>() {
 
         holder.txtTitle.setText(favouriteArray.location)
         holder.cvFavItem.setOnClickListener { onMovieClickListener?.onClick(favouriteArray) }
-
+        holder.deleteBtn.setOnClickListener{onMovieClickListener?.ondelete(favouriteArray)}
     }
     override fun getItemCount(): Int {
         return favourites.size
@@ -44,10 +44,10 @@ class ViewHolder(var row: View) : RecyclerView.ViewHolder(row) {
 
     var txtTitle: TextView
     var cvFavItem:CardView
-
+    var deleteBtn:Button
     init {
         txtTitle = row.findViewById(R.id.textLocation)
         cvFavItem=row.findViewById(R.id.cvFavouriteItem)
-
+        deleteBtn=row.findViewById(R.id.btnfavRemove)
     }
 }

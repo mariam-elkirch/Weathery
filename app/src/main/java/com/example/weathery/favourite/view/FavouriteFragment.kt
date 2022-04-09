@@ -145,4 +145,9 @@ class FavouriteFragment : Fragment() ,OnFavClickListener{
     }
 
     }
+
+    override fun ondelete(favourite: Favourite) {
+        Log.i("TAG","Delete"+favourite.location)
+        viewModel.deleteFav(favourite)
+    }
 }
