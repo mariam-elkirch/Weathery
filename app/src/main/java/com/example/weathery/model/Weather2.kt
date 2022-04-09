@@ -1,15 +1,29 @@
 package com.example.weathery.model
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
+import org.jetbrains.annotations.Nullable
+
+@Entity(tableName = "weather")
 data class Weather2(
-	val current: Current? = null,
-	val timezone: String? = null,
-	val timezoneOffset: Int? = null,
-	val daily: List<DailyItem> ,
-	val lon: Double? = null,
-	val hourly: List<HourlyItem>,
-	val lat: Double? = null,
-	val alerts: List<Alerts>?=null
-)
+	@PrimaryKey
+	var id:Int,
+	var current: Current?,
+	var timezone: String,
+	var timezoneOffset: Int,
+	var daily: List<DailyItem>?,
+	var lon: Double,
+	var hourly: List<HourlyItem>?,
+	var lat: Double? = null,
+	@Nullable
+	@Ignore
+	@ColumnInfo(defaultValue = "empty")
+	var alerts: List<Alerts>?
+){
+	constructor() :this(0,null,"",0,null,0.0,null,0.0,null)
+}
 data class Alerts(
 	var sender_name:String?=null,
 	var event: String?=null,

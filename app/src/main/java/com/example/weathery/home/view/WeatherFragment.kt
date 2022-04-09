@@ -16,6 +16,7 @@ import com.example.weathery.favourite.view.FavouriteViewModelFactory
 import com.example.weathery.home.viewmodel.HomeViewModel
 import com.example.weathery.home.viewmodel.HomeViewModelFactory
 import com.example.weathery.model.Repository
+import com.example.weathery.model.Utilitis
 import com.example.weathery.network.Client
 
 // TODO: Rename parameter arguments, choose names that match
@@ -57,10 +58,20 @@ class WeatherFragment : Fragment() {
             ), contextt!!
         )
         viewModel= ViewModelProvider(this,allweatherfactory).get(HomeViewModel::class.java)
+        if(Utilitis.isInternetAvailable(requireContext())){
         viewModel.weatherResponce.observe(requireActivity(), {
             Log.i("TAG",it.toString())
-        })
 
+            viewModel.insertWeather(it)
+
+
+           // Log.i("TAG","Locallllllll" +viewModel.localWeather().)
+        })}
+         viewModel.localWeather().observe(requireActivity()) { mywheather ->
+             Log.i("TAG", "Observationnnnnnnnnnnnnnnnnnnnnnnnnnnnn: ${mywheather}")
+
+
+         }
         viewModel.errorMessage.observe(requireActivity(), {
             Toast.makeText(contextt, it, Toast.LENGTH_SHORT).show()
         })

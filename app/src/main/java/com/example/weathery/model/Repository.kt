@@ -37,6 +37,15 @@ class Repository private constructor(
       return  localSource.getAllFavourite()
     }
 
+    override suspend fun insertWeather(weather2: Weather2) {
+        Log.i("TAG","Repo lat insert"+weather2.lat.toString())
+        localSource.insertWeather(weather2)
+    }
+
+    override fun getWeather(): LiveData<List<Weather2>> {
+      return  localSource.getWeather()
+    }
+
     override suspend fun getWearherNetwork(lat:String,long:String,units:String,language:String): Response<Weather2> {
         return remoteSource.getWeatherOverNetwork(lat,long,units,language)
     }

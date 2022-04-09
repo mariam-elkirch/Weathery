@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.weathery.model.RepositoryInterface
+import com.example.weathery.model.Utilitis
 import com.example.weathery.model.Weather2
 import kotlinx.coroutines.*
 
@@ -48,39 +49,28 @@ class HomeViewModel (iRepo: RepositoryInterface,context: Context) : ViewModel() 
                 if (response?.isSuccessful!!) {
                    weatherResponce.postValue(response?.body())
                     loading.value = false
+
                 } else {
                     onError("Error : ${response.message()} ")
                 }
             }
         }
     }
-    //Expose returned online Data
-  //  val onlineMovies: LiveData<List<Favourite>> = _movieList
 
-    fun getAllMovies(){
-       /* viewModelScope.launch{
-            var favourites = _iRepo.getAllFavourite()
-            withContext(Dispatchers.Main){
-                Log.i(TAG, "getAllMovies: ${favourites}")
-                _favList.postValue()
-            }
-        }*/
+    fun insertWeather(weather2: Weather2){
+                viewModelScope.launch(Dispatchers.IO) {
+               Log.i("TAG","Vie Model lat insert"+weather2.lat.toString())
+                    _iRepo.insertWeather(weather2)
+                }
     }
-   /* fun getAllFav(): LiveData<List<Favourite>> {
-        Log.i("TAG","view model")
-        return _iRepo!!.getAllFavourite()
+    fun localWeather(): LiveData<List<Weather2>> {
+        return _iRepo.getWeather()
     }
-    //add to fav
-    fun insertFav(favourite: Favourite) {
-        viewModelScope.launch(Dispatchers.IO){
-            Log.i("TAG",favourite.long+"view")
-            _iRepo.insertFav(favourite)
-        }
-    }*/
     private fun onError(message: String) {
+        if(Utilitis.isInternetAvailable(mycontext)){
         errorMessage.value = message
         loading.value = false
-    }
+    }}
 
     override fun onCleared() {
         super.onCleared()

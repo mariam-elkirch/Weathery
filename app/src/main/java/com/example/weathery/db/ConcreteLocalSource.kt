@@ -5,16 +5,21 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.mvvmkotlin.db.FavDataBase
 import com.example.weathery.model.Favourite
+import com.example.weathery.model.Weather2
 
 
 class  ConcreteLocalSource (context: Context) : LocalSource {
     private var dao: WeatherDao? = null
     var favourites: LiveData<List<Favourite>>
+    var weathers: LiveData<List<Weather2>>
+    private var weatherdao: WeatherResponceDao? = null
 
     init {
         val db: FavDataBase? = FavDataBase.getInstance(context!!.applicationContext)
         dao = db?.movieDao()
+        weatherdao=db?.weatherResDao()
      favourites = dao!!.getAllFavourite()
+        weathers=weatherdao!!.getWeather()
     }
 
     companion object{
@@ -36,6 +41,15 @@ class  ConcreteLocalSource (context: Context) : LocalSource {
 
     override  fun getAllFavourite(): LiveData<List<Favourite>> {
         return  favourites
+    }
+
+    override suspend fun insertWeather(weather2: Weather2) {
+        Log.i("TAG","Concrete lat insert"+weather2.id.toString())
+      weatherdao?.insertWeather(weather2)
+    }
+
+    override fun getWeather(): LiveData<List<Weather2>> {
+       return weathers
     }
 
 }

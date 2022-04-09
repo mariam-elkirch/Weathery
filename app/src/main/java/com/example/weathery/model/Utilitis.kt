@@ -47,7 +47,7 @@ class Utilitis {
           val date = Date(unix_seconds * 1000L)
           // format of the date
           //val jdf = SimpleDateFormat("EEE yyyy-MM-dd HH:mm")
-          val jdf = SimpleDateFormat("HH:mm a")
+          val jdf = SimpleDateFormat("HH:mm ")
           jdf.timeZone = TimeZone.getTimeZone("GMT+2")
           val java_date = jdf.format(date).trimIndent()
          return java_date

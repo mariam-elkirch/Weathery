@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +19,7 @@ import com.example.weathery.favouritedetails.view.FavouriteDetailsFragment
 import com.example.weathery.location.view.MapsFragment
 import com.example.weathery.model.Favourite
 import com.example.weathery.model.Repository
+import com.example.weathery.model.Utilitis
 import com.example.weathery.network.ApiManager
 import com.example.weathery.network.Client
 
@@ -128,6 +130,7 @@ class FavouriteFragment : Fragment() ,OnFavClickListener{
     }
 
     override fun onClick(favourite: Favourite) {
+        if(Utilitis.isInternetAvailable(requireContext())){
        Log.i("TAG","Favourite Click")
         val transaction = activity?.supportFragmentManager?.beginTransaction()
         val args = Bundle()
@@ -137,5 +140,9 @@ class FavouriteFragment : Fragment() ,OnFavClickListener{
         parentFragmentManager.setFragmentResult("itemFav",args)
         transaction?.addToBackStack(null)?.replace(R.id.container, FavouriteDetailsFragment())
         transaction?.commit()
+    }else{
+            Toast.makeText(contextt,"Open Your internet connection", Toast.LENGTH_SHORT).show()
+    }
+
     }
 }

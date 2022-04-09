@@ -112,9 +112,9 @@ class FavouriteDetailsFragment : Fragment() {
                         .into(ivCurrentImg)
                 }
 
-                favDeyailsAdapterHour.setHourlyList(it.hourly)
+                it.hourly?.let { it1 -> favDeyailsAdapterHour.setHourlyList(it1) }
 
-                favDeyailsAdapter.setDailyList(it.daily)
+                it.daily?.let { it1 -> favDeyailsAdapter.setDailyList(it1) }
                favDeyailsAdapter.notifyDataSetChanged()
             })
 

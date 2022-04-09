@@ -12,14 +12,15 @@ data class Favourite(
     @ColumnInfo(name = "location")
     var location: String,
 
-    @ColumnInfo(name = "longitude")
+    @ColumnInfo(name = "long")
     var long :String,
 
     @ColumnInfo(name = "lat")
     var lat :String,
 
-    @ColumnInfo(name = "latt")
-var latt :String
+    @ColumnInfo(name = "mlong")
+    var mlong :String,
+
     ){
     constructor() :this("","","","")
 }
