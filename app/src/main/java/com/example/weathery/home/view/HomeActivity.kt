@@ -27,7 +27,7 @@ class HomeActivity : AppCompatActivity() {
         sharedPreferences = this.getSharedPreferences("Setting",
             Context.MODE_PRIVATE)
         editor =  sharedPreferences.edit()
-        val sharedNameValue = sharedPreferences.getString("longitude","defaultname")
+        val sharedNameValue = sharedPreferences.getString("language","defaultname")
         Log.i("TAG",sharedNameValue+"My Shared Prefrence")
         if (savedInstanceState == null) {
             val fragment =WeatherFragment()

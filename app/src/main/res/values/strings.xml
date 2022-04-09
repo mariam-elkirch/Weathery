@@ -15,4 +15,5 @@
     <string name="Language">Language</string>
     <string name="english">english</string>
     <string name="arabic">arabic</string>
+    <string name="choose">Choose your Settings</string>
 </resources>

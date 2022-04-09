@@ -41,7 +41,7 @@ class HomeViewModel (iRepo: RepositoryInterface,context: Context) : ViewModel() 
         val sharedlong = sharedPreferences.getString("longitude","default")
         val sharedlat = sharedPreferences.getString("latitude","default")
         val sharedlanguage= sharedPreferences.getString("language","default")
-        val sharedunit= sharedPreferences.getString("units","default")
+        val sharedunit= sharedPreferences.getString("units","standard")
       //  Log.i("TAG",sharedNameValue+"My Shared Prefrence")
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             var response = _iRepo?.getWearherNetwork(sharedlat.toString(),sharedlong.toString(),sharedunit.toString(),sharedlanguage.toString())

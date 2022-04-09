@@ -1,15 +1,18 @@
 package com.example.weathery.home.view
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,9 +25,11 @@ import com.example.weathery.favouritedetails.view.DailyAdapter
 import com.example.weathery.favouritedetails.view.HourlyAdapter
 import com.example.weathery.home.viewmodel.HomeViewModel
 import com.example.weathery.home.viewmodel.HomeViewModelFactory
+import com.example.weathery.location.view.MapsFragment
 import com.example.weathery.model.Repository
 import com.example.weathery.model.Utilitis
 import com.example.weathery.network.Client
+import com.example.weathery.setting.view.SettingFragment
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -45,6 +50,10 @@ class WeatherFragment : Fragment() {
     lateinit var todaydate: TextView
     lateinit var recyclerViewHour: RecyclerView
     lateinit var favDeyailsAdapterHour: HourlyAdapter
+    lateinit var chooseBtm:Button
+
+    lateinit var sharedPreferences: SharedPreferences
+    lateinit var editor: SharedPreferences.Editor
 
     private var param1: String? = null
     private var param2: String? = null
@@ -69,7 +78,9 @@ class WeatherFragment : Fragment() {
         todaydate=view.findViewById(R.id.today_date)
         ivCurrentImg=view.findViewById(R.id.ivcurrentIcon)
         temperature=view.findViewById(R.id.temp_current)
-
+        chooseBtm=view.findViewById(R.id.choose_btn)
+        chooseBtm.visibility=View.GONE
+       var cv=   view.findViewById<CardView>(R.id.cvcurrentItem)
         recyclerView=view.findViewById(R.id.recycler_view_daily)
         favDeyailsAdapter = context?.let { DailyAdapter( it) }!!
 
@@ -85,6 +96,24 @@ class WeatherFragment : Fragment() {
         horizonalLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
         recyclerViewHour.layoutManager =  horizonalLayoutManager
         recyclerViewHour.adapter =  favDeyailsAdapterHour
+
+        sharedPreferences = requireContext().getSharedPreferences("Setting",
+            Context.MODE_PRIVATE)
+        editor =  sharedPreferences.edit()
+        val sharedlong = sharedPreferences.getString("longitude","default")
+        val sharedlat = sharedPreferences.getString("latitude","default")
+        val sharedlanguage= sharedPreferences.getString("language","default")
+        val sharedunit= sharedPreferences.getString("units","default")
+        if(sharedlat.equals("default")&&sharedlong.equals("default")&&
+            sharedlanguage.equals("default")&&sharedunit.equals("default")){
+            temperature.visibility=View.GONE
+            locality.visibility=View.GONE
+            cv.visibility=View.GONE
+            chooseBtm.visibility=View.VISIBLE
+            chooseBtm.setOnClickListener{
+                goToSettingFragment()
+            }
+        }
 
         allweatherfactory= HomeViewModelFactory(
             Repository.getInstance(
@@ -106,6 +135,7 @@ class WeatherFragment : Fragment() {
          viewModel.localWeather().observe(requireActivity()) { mywheather ->
              Log.i("TAG", "Observationnnnnnnnnnnnnnnnnnnnnnnnnnnnn: ${mywheather}")
             // Log.i("TAG","Hi from fav details"+mywheather.)
+             if(mywheather.size!=0){
              temperature.setText(mywheather.get(0).current?.temp.toString())
             // locality.setText(locationFavourite)
              var dt=Utilitis.convertDTtoHour(mywheather.get(0).current?.dt)
@@ -123,6 +153,7 @@ class WeatherFragment : Fragment() {
              mywheather.get(0).daily?.let { it1 -> favDeyailsAdapter.setDailyList(it1) }
              favDeyailsAdapter.notifyDataSetChanged()
 
+         }
          }
         viewModel.errorMessage.observe(requireActivity(), {
             Toast.makeText(contextt, it, Toast.LENGTH_SHORT).show()
@@ -157,5 +188,16 @@ class WeatherFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+    fun goToSettingFragment(){
+
+        val args = Bundle()
+
+        args.putString("home","home")
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
+
+        parentFragmentManager.setFragmentResult("home",args)
+        transaction?.addToBackStack(null)?.add(R.id.container, SettingFragment())
+        transaction?.commit()
     }
 }

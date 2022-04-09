@@ -104,7 +104,10 @@ class MapsFragment : Fragment() , OnMapReadyCallback, GoogleMap.OnMarkerClickLis
            // tv.setText(type)
 
             Log.i("TAG",type+"setting"+myLat)})
+        parentFragmentManager.setFragmentResultListener("home",this, FragmentResultListener {
+                requestKey, result -> type =result.getString("home","myset")
 
+            Log.i("TAG",type+"setting")})
        // myLongitude = arguments?.getString("long")
       //  Log.i("TAG",myLongitude+"mylong")
         val mapFragment =
