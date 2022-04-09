@@ -133,6 +133,7 @@ class FavouriteFragment : Fragment() ,OnFavClickListener{
         val args = Bundle()
         args.putString("favlong",favourite.long)
         args.putString("favlat",favourite.lat)
+        args.putString("favloc",favourite.location)
         parentFragmentManager.setFragmentResult("itemFav",args)
         transaction?.addToBackStack(null)?.replace(R.id.container, FavouriteDetailsFragment())
         transaction?.commit()

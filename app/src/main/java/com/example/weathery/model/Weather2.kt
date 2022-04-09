@@ -4,10 +4,9 @@ data class Weather2(
 	val current: Current? = null,
 	val timezone: String? = null,
 	val timezoneOffset: Int? = null,
-	val daily: List<DailyItem?>? = null,
+	val daily: List<DailyItem> ,
 	val lon: Double? = null,
-	val hourly: List<HourlyItem?>? = null,
-	val minutely: List<MinutelyItem?>? = null,
+	val hourly: List<HourlyItem>,
 	val lat: Double? = null,
 	val alerts: List<Alerts>?=null
 )
@@ -50,7 +49,7 @@ data class HourlyItem(
 	val feelsLike: Double? = null,
 	val windGust: Double? = null,
 	val dt: Int? = null,
-	val pop: Int? = null,
+	val pop: Double? = null,
 	val windDeg: Int? = null,
 	val dewPoint: Double? = null,
 	val weather: List<WeatherItem?>? = null,

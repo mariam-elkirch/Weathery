@@ -11,10 +11,12 @@ import kotlinx.coroutines.*
 
 private const val TAG = "AllMoviesFeature"
 
-class FavDetailsViewModel (iRepo: RepositoryInterface,context: Context) : ViewModel() {
+class FavDetailsViewModel (long:String,lat:String,iRepo: RepositoryInterface,context: Context) : ViewModel() {
 
     private val _iRepo: RepositoryInterface = iRepo
    val mycontext:Context=context
+    val favlongitude:String=long
+    val favlatitude:String=lat
     lateinit var sharedPreferences: SharedPreferences
     lateinit var editor: SharedPreferences.Editor
     val errorMessage = MutableLiveData<String>()
@@ -37,16 +39,14 @@ class FavDetailsViewModel (iRepo: RepositoryInterface,context: Context) : ViewMo
         sharedPreferences = mycontext.getSharedPreferences("Setting",
             Context.MODE_PRIVATE)
         editor =  sharedPreferences.edit()
-        val sharedlong = sharedPreferences.getString("longitude","default")
-        val sharedlat = sharedPreferences.getString("latitude","default")
         val sharedlanguage= sharedPreferences.getString("language","default")
         val sharedunit= sharedPreferences.getString("units","default")
       //  Log.i("TAG",sharedNameValue+"My Shared Prefrence")
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            var response = _iRepo?.getWearherNetwork(sharedlat.toString(),sharedlong.toString(),sharedunit.toString(),sharedlanguage.toString())
+            var response = _iRepo.getWearherNetwork(favlatitude,favlongitude,sharedunit.toString(),sharedlanguage.toString())
             withContext(Dispatchers.Main) {
-                if (response?.isSuccessful!!) {
-                   weatherResponce.postValue(response?.body())
+                if (response.isSuccessful!!) {
+                   weatherResponce.postValue(response.body())
                     loading.value = false
                 } else {
                     onError("Error : ${response.message()} ")

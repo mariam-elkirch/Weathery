@@ -8,6 +8,7 @@
         <entry key="..\:/Android ITI Mob/Weathery/app/src/main/res/drawable/ic_baseline_filter_drama_24.xml" value="0.2169230769230769" />
         <entry key="..\:/Android ITI Mob/Weathery/app/src/main/res/layout/activity_home.xml" value="0.20416666666666666" />
         <entry key="..\:/Android ITI Mob/Weathery/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/Android ITI Mob/Weathery/app/src/main/res/layout/daily_item.xml" value="0.18854166666666666" />
         <entry key="..\:/Android ITI Mob/Weathery/app/src/main/res/layout/favourite_item.xml" value="0.20416666666666666" />
         <entry key="..\:/Android ITI Mob/Weathery/app/src/main/res/layout/fragment_alarm.xml" value="0.20416666666666666" />
         <entry key="..\:/Android ITI Mob/Weathery/app/src/main/res/layout/fragment_favourite.xml" value="0.20416666666666666" />
@@ -15,6 +16,7 @@
         <entry key="..\:/Android ITI Mob/Weathery/app/src/main/res/layout/fragment_maps.xml" value="0.20416666666666666" />
         <entry key="..\:/Android ITI Mob/Weathery/app/src/main/res/layout/fragment_setting.xml" value="0.19010416666666666" />
         <entry key="..\:/Android ITI Mob/Weathery/app/src/main/res/layout/fragment_weather.xml" value="0.20416666666666666" />
+        <entry key="..\:/Android ITI Mob/Weathery/app/src/main/res/layout/hourly_item.xml" value="0.18854166666666666" />
         <entry key="..\:/Android ITI Mob/Weathery/app/src/main/res/menu/nav_menu.xml" value="0.20416666666666666" />
       </map>
     </option>
