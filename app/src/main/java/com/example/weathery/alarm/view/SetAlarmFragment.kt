@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentResultListener
 import com.example.weathery.R
 import com.example.weathery.favourite.view.FavouriteFragment
+import com.example.weathery.location.view.MapsFragment
 import com.example.weathery.model.Alarm
 import com.example.weathery.model.Favourite
 import com.example.weathery.model.Utilitis
@@ -110,6 +111,20 @@ class SetAlarmFragment : Fragment() {
         },
             now.get(Calendar.HOUR_OF_DAY),now.get(Calendar.MINUTE),false)
             timePicker.show() }
+        location_tv.setOnClickListener {
+            val transaction = activity?.supportFragmentManager?.beginTransaction()
+            val args = Bundle()
+            args.putString("alart","alart")
+            parentFragmentManager.setFragmentResult("alart",args)
+            transaction?.addToBackStack(null)?.add(R.id.container, MapsFragment())
+            transaction?.commit()
+        }
+        parentFragmentManager.setFragmentResultListener("mapalart",this, FragmentResultListener {
+                requestKey, result -> var type:String =result.getString("area","myset")
+            val long:String=result.getString("long","mylong")
+            val lat:String=result.getString("lat","mylong")
+            val fav=Favourite(type,long,lat,"")
+            Log.i("TAG",type+"SET ALARM"+long+" "+lat)})
        done_btn.setOnClickListener {
            val transaction = activity?.supportFragmentManager?.beginTransaction()
            val args = Bundle()

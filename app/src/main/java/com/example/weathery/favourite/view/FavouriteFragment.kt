@@ -141,7 +141,7 @@ class FavouriteFragment : Fragment() ,OnFavClickListener{
         transaction?.addToBackStack(null)?.replace(R.id.container, FavouriteDetailsFragment())
         transaction?.commit()
     }else{
-            Toast.makeText(contextt,"Open Your internet connection", Toast.LENGTH_SHORT).show()
+            Toast.makeText(contextt,"Check Your internet connection", Toast.LENGTH_SHORT).show()
     }
 
     }
