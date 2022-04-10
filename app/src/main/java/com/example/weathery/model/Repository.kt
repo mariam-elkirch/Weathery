@@ -37,6 +37,10 @@ class Repository private constructor(
       return  localSource.getAllFavourite()
     }
 
+    override suspend fun insertAlarm(alarm: Alarm) {
+        localSource.insertAlarm(alarm)
+    }
+
     override suspend fun insertWeather(weather2: Weather2) {
         Log.i("TAG","Repo lat insert"+weather2.lat.toString())
         localSource.insertWeather(weather2)

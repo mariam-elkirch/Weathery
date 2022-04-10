@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.mvvmkotlin.db.FavDataBase
+import com.example.weathery.model.Alarm
 import com.example.weathery.model.Favourite
 import com.example.weathery.model.Weather2
 
@@ -12,12 +13,15 @@ class  ConcreteLocalSource (context: Context) : LocalSource {
     private var dao: WeatherDao? = null
     var favourites: LiveData<List<Favourite>>
     var weathers: LiveData<List<Weather2>>
+    var alarms: LiveData<List<Alarm>>
     private var weatherdao: WeatherResponceDao? = null
-
+    private var alarmdao:AlarmDao?=null
     init {
         val db: FavDataBase? = FavDataBase.getInstance(context!!.applicationContext)
         dao = db?.movieDao()
+        alarmdao=db?.alarmDao()
         weatherdao=db?.weatherResDao()
+        alarms=alarmdao!!.getAllAlarms()
      favourites = dao!!.getAllFavourite()
         weathers=weatherdao!!.getWeather()
     }
@@ -46,6 +50,18 @@ class  ConcreteLocalSource (context: Context) : LocalSource {
     override suspend fun insertWeather(weather2: Weather2) {
         Log.i("TAG","Concrete lat insert"+weather2.id.toString())
       weatherdao?.insertWeather(weather2)
+    }
+
+    override suspend fun insertAlarm(alarm: Alarm) {
+        alarmdao?.insertAlarm(alarm)
+    }
+
+    override suspend fun deleteAlarm(alarm: Alarm) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getAllAlarms(): LiveData<List<Alarm>> {
+      return  alarms
     }
 
     override fun getWeather(): LiveData<List<Weather2>> {
