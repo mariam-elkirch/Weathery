@@ -16,4 +16,8 @@
     <string name="english">english</string>
     <string name="arabic">arabic</string>
     <string name="choose">Choose your Settings</string>
+    <string name="startDate">Start Date</string>
+    <string name="endDate">End Date</string>
+    <string name="done">Done</string>
+    <string name="time">Time</string>
 </resources>

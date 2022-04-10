@@ -1,11 +1,25 @@
 package com.example.weathery.alarm.view
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TimePicker
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.fragment.app.FragmentResultListener
 import com.example.weathery.R
+import com.example.weathery.favourite.view.FavouriteFragment
+import com.example.weathery.location.view.MapsFragment
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,7 +35,20 @@ class AlarmFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
+    var day = 0
+    var month: Int = 0
+    var year: Int = 0
+    var hour: Int = 0
+    var minute: Int = 0
+    var myDay = 0
+    var myMonth: Int = 0
+    var myYear: Int = 0
+    var myHour: Int = 0
+    var myMinute: Int = 0
+    @RequiresApi(Build.VERSION_CODES.O)
+    val localDate = LocalDate.now()
+    var formate = SimpleDateFormat("dd MMM, YYYY", Locale.forLanguageTag("en"))
+    var timeFormat = SimpleDateFormat("hh:mm a", Locale.ENGLISH)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -30,12 +57,28 @@ class AlarmFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        var view=inflater.inflate(R.layout.fragment_alarm, container, false)
+        val fabb: FloatingActionButton = view.findViewById(R.id.fab_alarm)
+
+
+        fabb.setOnClickListener {
+            goToSetAlarmFragment()
+
+        }
+        parentFragmentManager.setFragmentResultListener("done",this, FragmentResultListener {
+                requestKey, result ->var start =result.getLong("start",1)
+            var end=result.getLong("end",1)
+            var t=result.getLong("time",1)
+
+            Log.i("TAG","Time SETALARM"+t)
+            Log.i("TAG","TYPE SETALARM"+start+end)})
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_alarm, container, false)
+        return view
     }
 
     companion object {
@@ -56,5 +99,16 @@ class AlarmFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+    fun goToSetAlarmFragment(){
+
+        val args = Bundle()
+
+        args.putString("alarm","alarm")
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
+
+        parentFragmentManager.setFragmentResult("alarm",args)
+        transaction?.addToBackStack(null)?.replace(R.id.container, SetAlarmFragment())
+        transaction?.commit()
     }
 }
