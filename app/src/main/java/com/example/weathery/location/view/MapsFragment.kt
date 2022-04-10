@@ -97,7 +97,24 @@ class MapsFragment : Fragment() , OnMapReadyCallback, GoogleMap.OnMarkerClickLis
 
              Log.i("TAG",type+"favou")})
 
+        parentFragmentManager.setFragmentResultListener("alart",this, FragmentResultListener {
+                requestKey, result ->type =result.getString("alart","my")
+            if(type.equals("alart")){
+                okBtn.visibility=View.VISIBLE
+                okBtn.setOnClickListener {
+                    val transaction = activity?.supportFragmentManager?.beginTransaction()
+                    val args = Bundle()
+                    args.putString("area",returnLocationToHome)
+                    args.putString("lat",myLat)
+                    args.putString("long",myLongitude)
+                    parentFragmentManager.setFragmentResult("mapalart",args)
+                    transaction?.addToBackStack(null)?.replace(R.id.container, SetAlarmFragment())
+                    transaction?.commit()
+                }
 
+            }
+
+            Log.i("TAG",type+"favou")})
 
         parentFragmentManager.setFragmentResultListener("setting",this, FragmentResultListener {
                 requestKey, result -> type =result.getString("set","myset")
