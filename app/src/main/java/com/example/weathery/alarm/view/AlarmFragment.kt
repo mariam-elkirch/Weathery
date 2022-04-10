@@ -2,6 +2,8 @@ package com.example.weathery.alarm.view
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +18,7 @@ import androidx.fragment.app.FragmentResultListener
 import com.example.weathery.R
 import com.example.weathery.favourite.view.FavouriteFragment
 import com.example.weathery.location.view.MapsFragment
+import com.example.weathery.model.Alarm
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -35,16 +38,8 @@ class AlarmFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    var day = 0
-    var month: Int = 0
-    var year: Int = 0
-    var hour: Int = 0
-    var minute: Int = 0
-    var myDay = 0
-    var myMonth: Int = 0
-    var myYear: Int = 0
-    var myHour: Int = 0
-    var myMinute: Int = 0
+    lateinit var sharedPreferences: SharedPreferences
+    lateinit var editor: SharedPreferences.Editor
     @RequiresApi(Build.VERSION_CODES.O)
     val localDate = LocalDate.now()
     var formate = SimpleDateFormat("dd MMM, YYYY", Locale.forLanguageTag("en"))
@@ -73,9 +68,20 @@ class AlarmFragment : Fragment() {
         parentFragmentManager.setFragmentResultListener("done",this, FragmentResultListener {
                 requestKey, result ->var start =result.getLong("start",1)
             var end=result.getLong("end",1)
-            var t=result.getLong("time",1)
 
-            Log.i("TAG","Time SETALARM"+t)
+            var t=result.getLong("time",1)
+              var long=result.getString("long","long")
+            sharedPreferences = requireContext().getSharedPreferences("Setting",
+                Context.MODE_PRIVATE)
+            editor =  sharedPreferences.edit()
+            val sharedlat = sharedPreferences.getString("latAlarm","default")
+            val sharedLong=sharedPreferences.getString("longAlarm","default")
+            Log.i("TAG",sharedlat+"hiii"+sharedLong+"Time SETALARM Time"+t)
+            val alarm= sharedlat?.let {
+                if (sharedLong != null) {
+                    Alarm(0,start,end,t,sharedLong, it)
+                }
+            }
             Log.i("TAG","TYPE SETALARM"+start+end)})
         // Inflate the layout for this fragment
         return view

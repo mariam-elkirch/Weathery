@@ -2,6 +2,8 @@ package com.example.weathery.alarm.view
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -17,6 +19,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentResultListener
 import com.example.weathery.R
 import com.example.weathery.favourite.view.FavouriteFragment
+import com.example.weathery.location.view.MapsFragment
 import com.example.weathery.model.Alarm
 import com.example.weathery.model.Favourite
 import com.example.weathery.model.Utilitis
@@ -34,6 +37,9 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class SetAlarmFragment : Fragment() {
+    val CUSTOM_PREF_NAME = "Setting"
+    lateinit var sharedPreferences: SharedPreferences
+    lateinit var editor: SharedPreferences.Editor
     lateinit var startDate: TextView
     lateinit var endDate: TextView
     lateinit var location_tv: TextView
@@ -41,6 +47,7 @@ class SetAlarmFragment : Fragment() {
     lateinit var done_btn:Button
     private var param1: String? = null
     private var param2: String? = null
+    var flag:Boolean = false
     var user_start:String?=null
     var user_end:String?=null
     private var user_long:String?=null
@@ -68,6 +75,10 @@ class SetAlarmFragment : Fragment() {
         time_tv=view.findViewById(R.id.tvTime)
         done_btn=view.findViewById(R.id.doneButton)
       val alarm=Alarm()
+        sharedPreferences = requireContext().getSharedPreferences(CUSTOM_PREF_NAME,
+            Context.MODE_PRIVATE)
+        editor =  sharedPreferences.edit()
+
         val now = Calendar.getInstance()
         parentFragmentManager.setFragmentResultListener("alarm",this, FragmentResultListener {
                 requestKey, result -> var type =result.getString("alarm","alarm")
@@ -99,6 +110,14 @@ class SetAlarmFragment : Fragment() {
                 now.get(Calendar.YEAR),now.get(Calendar.MONTH),now.get(Calendar.DAY_OF_MONTH))
             datePicker.show()
         }
+        location_tv.setOnClickListener {
+            val transaction = activity?.supportFragmentManager?.beginTransaction()
+            val args = Bundle()
+            args.putString("alert","alert")
+            parentFragmentManager.setFragmentResult("alert",args)
+            transaction?.addToBackStack(null)?.add(R.id.container, MapsFragment())
+            transaction?.commit()
+        }
         time_tv.setOnClickListener {
             val timePicker = TimePickerDialog(context, TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
             val selectedTime = Calendar.getInstance()
@@ -110,17 +129,38 @@ class SetAlarmFragment : Fragment() {
         },
             now.get(Calendar.HOUR_OF_DAY),now.get(Calendar.MINUTE),false)
             timePicker.show() }
+
+
+        parentFragmentManager.setFragmentResultListener("myalert",this, FragmentResultListener {
+                requestKey, result -> var type:String =result.getString("area","myset")
+            val long:String=result.getString("long","mylong")
+            val lat:String=result.getString("lat","mylong")
+            alarm.longitude=long
+            alarm.latitude=lat
+            editor.putString("longAlarm",long)
+            editor.putString("latAlarm",lat)
+            editor.apply()
+            editor.commit()
+            Log.i("TAG",type+"ALERT"+long+" "+lat)
+           })
+
        done_btn.setOnClickListener {
+
            val transaction = activity?.supportFragmentManager?.beginTransaction()
            val args = Bundle()
            args.putLong("start",alarm.startDate)
            args.putLong("end",alarm.endDate)
            args.putLong("time",alarm.time)
+           val sharedLong=sharedPreferences.getString("longAlarm","default")
+             if(alarm.time.toString().equals(1)||alarm.endDate.equals(1)||alarm.startDate.equals(1)||sharedLong.equals("default")){
+                 Toast.makeText(context,"Enter All Fields", Toast.LENGTH_SHORT).show()
+             }
+           else{
          //  args.putString("long",myLongitude)
            parentFragmentManager.setFragmentResult("done",args)
            transaction?.addToBackStack(null)?.replace(R.id.container, AlarmFragment())
            transaction?.commit()
-       }
+       }}
         return view
     }
 

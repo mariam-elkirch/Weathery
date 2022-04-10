@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.FragmentResultListener
 import com.example.weathery.R
+import com.example.weathery.alarm.view.SetAlarmFragment
 import com.example.weathery.favourite.view.FavouriteFragment
 import com.example.weathery.model.Utilitis
 
@@ -104,6 +105,25 @@ class MapsFragment : Fragment() , OnMapReadyCallback, GoogleMap.OnMarkerClickLis
            // tv.setText(type)
 
             Log.i("TAG",type+"setting"+myLat)})
+
+        parentFragmentManager.setFragmentResultListener("alert",this, FragmentResultListener {
+                requestKey, result -> type =result.getString("alert","alert")
+            if(type.equals("alert")){
+                okBtn.visibility=View.VISIBLE
+                okBtn.setOnClickListener {
+                    val transaction = activity?.supportFragmentManager?.beginTransaction()
+                    val args = Bundle()
+                    args.putString("area",returnLocationToHome)
+                    args.putString("lat",myLat)
+                    args.putString("long",myLongitude)
+                    parentFragmentManager.setFragmentResult("myalert",args)
+                    transaction?.addToBackStack(null)?.replace(R.id.container, SetAlarmFragment())
+                    transaction?.commit()
+                }
+
+            }
+            Log.i("TAG",type+"alert")})
+
         parentFragmentManager.setFragmentResultListener("home",this, FragmentResultListener {
                 requestKey, result -> type =result.getString("home","myset")
 
