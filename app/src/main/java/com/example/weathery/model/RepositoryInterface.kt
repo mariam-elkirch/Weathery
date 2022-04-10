@@ -12,5 +12,6 @@ interface RepositoryInterface {
     suspend fun insertAlarm(alarm: Alarm)
    suspend fun insertWeather(weather2: Weather2)
     fun getWeather(): LiveData<List<Weather2>>
+    fun getAlarm(): LiveData<List<Alarm>>
     suspend fun getWearherNetwork(lat:String,long:String,units:String,language:String): Response<Weather2>
 }

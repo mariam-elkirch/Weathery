@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.*
+import com.example.weathery.model.Alarm
 import com.example.weathery.model.RepositoryInterface
 import com.example.weathery.model.Utilitis
 import com.example.weathery.model.Weather2
@@ -25,14 +26,14 @@ class AlarmViewModel (iRepo: RepositoryInterface) : ViewModel() {
    // lat:String,long:String,units:String,language:String
 
 
-    fun insertWeather(weather2: Weather2){
+    fun insertAlarm(alarm: Alarm){
                 viewModelScope.launch(Dispatchers.IO) {
-               Log.i("TAG","Vie Model lat insert"+weather2.lat.toString())
-                    _iRepo.insertWeather(weather2)
+              // Log.i("TAG","Vie Model lat insert"+weather2.lat.toString())
+                    _iRepo.insertAlarm(alarm)
                 }
     }
-    fun localWeather(): LiveData<List<Weather2>> {
-        return _iRepo.getWeather()
+    fun getAlarms(): LiveData<List<Alarm>> {
+        return _iRepo.getAlarm()
     }
 
     override fun onCleared() {

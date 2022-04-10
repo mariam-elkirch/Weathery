@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.weathery.model.RepositoryInterface
 import java.lang.IllegalArgumentException
 
-class AlarmViewModelFactory(private val _irepo: RepositoryInterface, val context: Context) :
+class AlarmViewModelFactory(private val _irepo: RepositoryInterface) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(AlarmViewModel::class.java)) {

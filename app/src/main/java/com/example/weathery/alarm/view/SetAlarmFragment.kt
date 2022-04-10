@@ -17,12 +17,18 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentResultListener
+import androidx.lifecycle.ViewModelProvider
 import com.example.weathery.R
+import com.example.weathery.alarm.viewmodel.AlarmViewModel
+import com.example.weathery.alarm.viewmodel.AlarmViewModelFactory
+import com.example.weathery.db.ConcreteLocalSource
 import com.example.weathery.favourite.view.FavouriteFragment
 import com.example.weathery.location.view.MapsFragment
 import com.example.weathery.model.Alarm
 import com.example.weathery.model.Favourite
+import com.example.weathery.model.Repository
 import com.example.weathery.model.Utilitis
+import com.example.weathery.network.Client
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,6 +46,9 @@ class SetAlarmFragment : Fragment() {
     val CUSTOM_PREF_NAME = "Setting"
     lateinit var sharedPreferences: SharedPreferences
     lateinit var editor: SharedPreferences.Editor
+    lateinit var viewModel: AlarmViewModel
+    var contextt: Context? = null
+    lateinit var allalarmfactory: AlarmViewModelFactory
     lateinit var startDate: TextView
     lateinit var endDate: TextView
     lateinit var location_tv: TextView
@@ -75,6 +84,14 @@ class SetAlarmFragment : Fragment() {
         time_tv=view.findViewById(R.id.tvTime)
         done_btn=view.findViewById(R.id.doneButton)
       val alarm=Alarm()
+        contextt=container?.context
+        allalarmfactory= AlarmViewModelFactory(
+            Repository.getInstance(
+                Client.getInstance(),
+                ConcreteLocalSource(contextt!!), contextt!!
+
+            ))
+        viewModel= ViewModelProvider(this,allalarmfactory).get(AlarmViewModel::class.java)
         sharedPreferences = requireContext().getSharedPreferences(CUSTOM_PREF_NAME,
             Context.MODE_PRIVATE)
         editor =  sharedPreferences.edit()
@@ -93,6 +110,9 @@ class SetAlarmFragment : Fragment() {
 
                 alarm.startDate=Utilitis.convertDateToMillis(date)
                 user_start=date
+                editor.putLong("start_date",alarm.startDate)
+                editor.apply()
+                editor.commit()
                 Toast.makeText(context,""+alarm.startDate, Toast.LENGTH_SHORT).show()
             },
                 now.get(Calendar.YEAR),now.get(Calendar.MONTH),now.get(Calendar.DAY_OF_MONTH))
@@ -105,6 +125,9 @@ class SetAlarmFragment : Fragment() {
                 selectedDate.set(Calendar.DAY_OF_MONTH,dayOfMonth)
                 val date = formate.format(selectedDate.time)
                 alarm.endDate=Utilitis.convertDateToMillis(date)
+                editor.putLong("end_date",alarm.endDate)
+                editor.apply()
+                editor.commit()
                 Toast.makeText(context,"date : " + date, Toast.LENGTH_SHORT).show()
             },
                 now.get(Calendar.YEAR),now.get(Calendar.MONTH),now.get(Calendar.DAY_OF_MONTH))
@@ -125,6 +148,9 @@ class SetAlarmFragment : Fragment() {
             selectedTime.set(Calendar.MINUTE,minute)
             Log.i("TAG",timeFormat.format(selectedTime.time))
             alarm.time=Utilitis.convertTimeToLong(timeFormat.format(selectedTime.time))
+                editor.putLong("time",alarm.time)
+                editor.apply()
+                editor.commit()
             // btn_show.text = timeFormat.format(selectedTime.time)
         },
             now.get(Calendar.HOUR_OF_DAY),now.get(Calendar.MINUTE),false)
@@ -149,9 +175,20 @@ class SetAlarmFragment : Fragment() {
            val transaction = activity?.supportFragmentManager?.beginTransaction()
            val args = Bundle()
            args.putLong("start",alarm.startDate)
+
            args.putLong("end",alarm.endDate)
            args.putLong("time",alarm.time)
            val sharedLong=sharedPreferences.getString("longAlarm","default")
+           val sharedLat=sharedPreferences.getString("latAlarm","default")
+           val sharedEnd=sharedPreferences.getLong("end_date",1)
+           val sharedStart=sharedPreferences.getLong("start_date",1)
+           val sharedTime=sharedPreferences.getLong("time",1)
+           alarm.endDate=sharedEnd
+           alarm.time=sharedTime
+           alarm.startDate=sharedStart
+               alarm.longitude=sharedLong!!
+           alarm.latitude= sharedLat!!
+           viewModel.insertAlarm(alarm)
              if(alarm.time.toString().equals(1)||alarm.endDate.equals(1)||alarm.startDate.equals(1)||sharedLong.equals("default")){
                  Toast.makeText(context,"Enter All Fields", Toast.LENGTH_SHORT).show()
              }

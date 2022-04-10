@@ -15,10 +15,18 @@ import android.widget.TimePicker
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentResultListener
+import androidx.lifecycle.ViewModelProvider
 import com.example.weathery.R
+import com.example.weathery.alarm.viewmodel.AlarmViewModel
+import com.example.weathery.alarm.viewmodel.AlarmViewModelFactory
+import com.example.weathery.db.ConcreteLocalSource
 import com.example.weathery.favourite.view.FavouriteFragment
+import com.example.weathery.favourite.view.FavouriteViewModel
+import com.example.weathery.favourite.view.FavouriteViewModelFactory
 import com.example.weathery.location.view.MapsFragment
 import com.example.weathery.model.Alarm
+import com.example.weathery.model.Repository
+import com.example.weathery.network.Client
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -38,12 +46,13 @@ class AlarmFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    var contextt: Context? = null
+    lateinit var viewModel: AlarmViewModel
+    lateinit var allalarmfactory: AlarmViewModelFactory
     lateinit var sharedPreferences: SharedPreferences
     lateinit var editor: SharedPreferences.Editor
     @RequiresApi(Build.VERSION_CODES.O)
-    val localDate = LocalDate.now()
-    var formate = SimpleDateFormat("dd MMM, YYYY", Locale.forLanguageTag("en"))
-    var timeFormat = SimpleDateFormat("hh:mm a", Locale.ENGLISH)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -58,6 +67,14 @@ class AlarmFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         var view=inflater.inflate(R.layout.fragment_alarm, container, false)
+        contextt=container?.context
+       allalarmfactory= AlarmViewModelFactory(
+            Repository.getInstance(
+                Client.getInstance(),
+                ConcreteLocalSource(contextt!!), contextt!!
+
+            ))
+        viewModel= ViewModelProvider(this,allalarmfactory).get(AlarmViewModel::class.java)
         val fabb: FloatingActionButton = view.findViewById(R.id.fab_alarm)
 
 
@@ -77,11 +94,19 @@ class AlarmFragment : Fragment() {
             val sharedlat = sharedPreferences.getString("latAlarm","default")
             val sharedLong=sharedPreferences.getString("longAlarm","default")
             Log.i("TAG",sharedlat+"hiii"+sharedLong+"Time SETALARM Time"+t)
-            val alarm= sharedlat?.let {
-                if (sharedLong != null) {
-                    Alarm(0,start,end,t,sharedLong, it)
-                }
+            val myalarm=Alarm()
+            myalarm.latitude= sharedlat!!
+            myalarm.longitude=sharedLong!!
+            myalarm.endDate=end
+            myalarm.startDate=start
+            myalarm.time=t
+            viewModel.getAlarms().observe(viewLifecycleOwner){ alarms ->
+                if(alarms != null)
+                 Log.i("TAM",alarms.get(1).latitude+"inside Alarmssssssss")
+                   // favMoviesAdapter.setMovieList(favourites)
+               // favMoviesAdapter.notifyDataSetChanged()
             }
+           // Log.i("TAG",vi)
             Log.i("TAG","TYPE SETALARM"+start+end)})
         // Inflate the layout for this fragment
         return view

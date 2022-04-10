@@ -50,6 +50,10 @@ class Repository private constructor(
       return  localSource.getWeather()
     }
 
+    override fun getAlarm(): LiveData<List<Alarm>> {
+       return localSource.getAllAlarms()
+    }
+
     override suspend fun getWearherNetwork(lat:String,long:String,units:String,language:String): Response<Weather2> {
         return remoteSource.getWeatherOverNetwork(lat,long,units,language)
     }
