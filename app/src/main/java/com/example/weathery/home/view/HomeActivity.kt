@@ -7,12 +7,15 @@ import android.os.Bundle
 import android.util.Log
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
+import androidx.work.*
 import com.example.weathery.R
 import com.example.weathery.alarm.view.AlarmFragment
 import com.example.weathery.favourite.view.FavouriteFragment
 import com.example.weathery.setting.view.SettingFragment
+import com.example.weathery.workmanager.Work
 
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.util.concurrent.TimeUnit
 
 class HomeActivity : AppCompatActivity() {
     lateinit var bottomNav : BottomNavigationView
@@ -21,6 +24,24 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        //cancel periodic
+        sharedPreferences = this.getSharedPreferences("Setting",
+            Context.MODE_PRIVATE)
+        editor =  sharedPreferences.edit()
+       val sharedlanguage= sharedPreferences.getString("language","default")
+        WorkManager.getInstance(this).cancelAllWorkByTag("periodic")
+        val periodicRequest: PeriodicWorkRequest =
+            PeriodicWorkRequest.Builder(Work::class.java, 4, TimeUnit.MINUTES)
+                .setInitialDelay(10, TimeUnit.SECONDS) //each 3 min
+                .addTag("periodic")
+                .build()
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "Mariam",
+            ExistingPeriodicWorkPolicy.REPLACE,
+            periodicRequest
+        )
+        Log.i("TAG", "In side periodic request setter"+sharedlanguage)
+
         loadFragment(WeatherFragment())
 
         bottomNav = findViewById(R.id.bottom_nav) as BottomNavigationView

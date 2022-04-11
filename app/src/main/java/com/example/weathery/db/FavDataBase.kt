@@ -14,7 +14,7 @@ import com.example.weathery.model.Converters
 import com.example.weathery.model.Favourite
 import com.example.weathery.model.Weather2
 
-@Database(entities = [Favourite::class,Weather2::class, Alarm::class], version =25)
+@Database(entities = [Favourite::class,Weather2::class, Alarm::class], version =28)
 @TypeConverters(Converters::class)
 abstract class FavDataBase: RoomDatabase() {
     abstract fun movieDao(): WeatherDao?

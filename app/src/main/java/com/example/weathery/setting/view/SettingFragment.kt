@@ -104,20 +104,20 @@ class SettingFragment : Fragment() {
             RadioGroup.OnCheckedChangeListener { group, checkedId ->
                 val radio: RadioButton =view.findViewById(checkedId)
                 if(radio.text.equals("english")){
-                    editor.putString("language","en")
+                    editor.putString("lang","en")
                     editor.apply()
                     editor.commit()
                 }
 
                 if(radio.text.equals("arabic")){
-                    editor.putString("language","ar")
+                    editor.putString("lang","ar")
                     editor.apply()
                     editor.commit()
                 }
 
             })
 
-        val sharedNameValue = sharedPreferences.getString("language","defaultname")
+        val sharedNameValue = sharedPreferences.getString("lang","defaultname")
         Log.i("TAG",sharedNameValue+"My Shared Prefrence")
         return view
     }

@@ -40,7 +40,7 @@ class HomeViewModel (iRepo: RepositoryInterface,context: Context) : ViewModel() 
         editor =  sharedPreferences.edit()
         val sharedlong = sharedPreferences.getString("longitude","default")
         val sharedlat = sharedPreferences.getString("latitude","default")
-        val sharedlanguage= sharedPreferences.getString("language","default")
+        val sharedlanguage= sharedPreferences.getString("lang","default")
         val sharedunit= sharedPreferences.getString("units","standard")
       //  Log.i("TAG",sharedNameValue+"My Shared Prefrence")
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {

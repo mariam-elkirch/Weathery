@@ -20,4 +20,5 @@
     <string name="endDate">End Date</string>
     <string name="done">Done</string>
     <string name="time">Time</string>
+    <string name="describtion">describtion</string>
 </resources>

@@ -1,7 +1,5 @@
 package com.example.weathery.alarm.view
 
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
@@ -11,26 +9,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TimePicker
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.ViewModelProvider
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.example.weathery.R
 import com.example.weathery.alarm.viewmodel.AlarmViewModel
 import com.example.weathery.alarm.viewmodel.AlarmViewModelFactory
 import com.example.weathery.db.ConcreteLocalSource
-import com.example.weathery.favourite.view.FavouriteFragment
-import com.example.weathery.favourite.view.FavouriteViewModel
-import com.example.weathery.favourite.view.FavouriteViewModelFactory
-import com.example.weathery.location.view.MapsFragment
 import com.example.weathery.model.Alarm
 import com.example.weathery.model.Repository
 import com.example.weathery.network.Client
+import com.example.weathery.workmanager.OneTimeWorker
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -86,7 +81,7 @@ class AlarmFragment : Fragment() {
                 requestKey, result ->var start =result.getLong("start",1)
             var end=result.getLong("end",1)
 
-            var t=result.getLong("time",1)
+            var t=result.getString("time","default")
               var long=result.getString("long","long")
             sharedPreferences = requireContext().getSharedPreferences("Setting",
                 Context.MODE_PRIVATE)
@@ -102,6 +97,10 @@ class AlarmFragment : Fragment() {
             myalarm.time=t
             viewModel.getAlarms().observe(viewLifecycleOwner){ alarms ->
                 if(alarms != null)
+                    setAlarmsListForManager(alarms)
+                    findNextAlarm()
+                   // FindNextAlarm.setContext(contextt!!)
+                   // FindNextAlarm.alarmList=alarms
                  Log.i("TAM",alarms.get(1).latitude+"inside Alarmssssssss")
                    // favMoviesAdapter.setMovieList(favourites)
                // favMoviesAdapter.notifyDataSetChanged()
@@ -112,25 +111,7 @@ class AlarmFragment : Fragment() {
         return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AlarmFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AlarmFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+
     fun goToSetAlarmFragment(){
 
         val args = Bundle()
@@ -141,5 +122,51 @@ class AlarmFragment : Fragment() {
         parentFragmentManager.setFragmentResult("alarm",args)
         transaction?.addToBackStack(null)?.replace(R.id.container, SetAlarmFragment())
         transaction?.commit()
+    }
+    companion object {
+        lateinit var alarmsList: List<Alarm>
+        fun setAlarmsListForManager(alarmsList: List<Alarm>) {
+            this.alarmsList = alarmsList
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        fun findNextAlarm() {
+            // WorkManager.getInstance().cancelAllWorkByTag("alarms")
+            val currentTime = Calendar.getInstance().timeInMillis
+            Log.i("TAG", "current time$currentTime")
+            var smallest = currentTime
+            var scheduledAlarm: String? = null
+            var timeInMills: Long = 0
+            Log.i("TAG", "alarm list $alarmsList")
+            for (alarm in alarmsList) {
+                Log.i("TAG", " ")
+                Log.i("TAG", " ")
+                timeInMills = alarm.timemills
+                Log.i(
+                    "TAG",
+                    "In side findRestMills " + timeInMills + " " + (timeInMills - currentTime)
+                )
+                Log.i("TAG", "current time$currentTime")
+                if (timeInMills - currentTime >= 0 && timeInMills - currentTime < smallest) {
+                    smallest = timeInMills - currentTime
+                    scheduledAlarm = timeInMills.toString()
+                    Log.i("TAG", "FinfResut If $scheduledAlarm")
+                }
+            }
+            if (scheduledAlarm != null) {
+                val currentTime = Calendar.getInstance().timeInMillis
+                Log.i("TAG", "In side smallest reminder method")
+                val finalTime = timeInMills - currentTime
+                val data = Data.Builder()
+                    .build()
+                val reminderRequest = OneTimeWorkRequest.Builder(OneTimeWorker::class.java)
+                    .setInitialDelay(finalTime, TimeUnit.MILLISECONDS)
+                    .setInputData(data)
+                    .addTag("alarms")
+                    .build()
+                WorkManager.getInstance().enqueue(reminderRequest)
+            }
+
+        }
     }
 }

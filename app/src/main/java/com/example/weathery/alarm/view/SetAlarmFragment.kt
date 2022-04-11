@@ -147,8 +147,8 @@ class SetAlarmFragment : Fragment() {
             selectedTime.set(Calendar.HOUR_OF_DAY,hourOfDay)
             selectedTime.set(Calendar.MINUTE,minute)
             Log.i("TAG",timeFormat.format(selectedTime.time))
-            alarm.time=Utilitis.convertTimeToLong(timeFormat.format(selectedTime.time))
-                editor.putLong("time",alarm.time)
+            alarm.time=timeFormat.format(selectedTime.time)
+                editor.putString("time",alarm.time)
                 editor.apply()
                 editor.commit()
             // btn_show.text = timeFormat.format(selectedTime.time)
@@ -177,19 +177,20 @@ class SetAlarmFragment : Fragment() {
            args.putLong("start",alarm.startDate)
 
            args.putLong("end",alarm.endDate)
-           args.putLong("time",alarm.time)
+           args.putString("time",alarm.time)
            val sharedLong=sharedPreferences.getString("longAlarm","default")
            val sharedLat=sharedPreferences.getString("latAlarm","default")
            val sharedEnd=sharedPreferences.getLong("end_date",1)
            val sharedStart=sharedPreferences.getLong("start_date",1)
-           val sharedTime=sharedPreferences.getLong("time",1)
+           val sharedTime=sharedPreferences.getString("time","time")
            alarm.endDate=sharedEnd
-           alarm.time=sharedTime
+           alarm.time= sharedTime!!
            alarm.startDate=sharedStart
                alarm.longitude=sharedLong!!
            alarm.latitude= sharedLat!!
+           alarm.timemills=Utilitis.convertTimeToLong(alarm.time)
            viewModel.insertAlarm(alarm)
-             if(alarm.time.toString().equals(1)||alarm.endDate.equals(1)||alarm.startDate.equals(1)||sharedLong.equals("default")){
+             if(alarm.time.equals("")||alarm.endDate.equals(1)||alarm.startDate.equals(1)||sharedLong.equals("default")){
                  Toast.makeText(context,"Enter All Fields", Toast.LENGTH_SHORT).show()
              }
            else{

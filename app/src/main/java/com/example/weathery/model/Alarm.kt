@@ -14,11 +14,13 @@ data class Alarm(
     @ColumnInfo(name = "endDate")
     var endDate:Long,
     @ColumnInfo(name = "time")
-    var time:Long,
+    var time:String,
+    @ColumnInfo(name = "timeInMills")
+    var timemills:Long,
     @ColumnInfo(name = "longitude")
     var longitude:String,
     @ColumnInfo(name = "latitude")
     var latitude:String
 ) {
-    constructor() : this(0,1,1,1,"","")
+    constructor() : this(0,1,1,"",1,"","")
 }
