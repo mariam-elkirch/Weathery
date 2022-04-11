@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="favourite">المفضل</string>
+    <string name="setting">الاعدادات</string>
+    <string name="alarms">المنبهات</string>
+    <string name="Location">الموقع</string>
+    <string name="where_are_you_going">الي اين انت ذاهب</string>
+    <string name="TemperatureWindspeed"><![CDATA[Temperature & Wind Speed]]></string>
+    <string name="imperical">Temperature in Ferinheit and wind speed in miles/hour</string>
+    <string name="metric">Temperature in celesius and wind speed in meters/sec</string>
+    <string name="standard">Temperature in Kelvin and Wind speed in meter/sec</string>
+    <string name="Language">اللغه</string>
+    <string name="english">الانجليزيه</string>
+    <string name="arabic">العربيه</string>
+    <string name="choose">اختر الاعدادات</string>
+    <string name="startDate">بدايه التاريخ</string>
+    <string name="endDate">نهايه التاريخ</string>
+    <string name="done">موافق</string>
+    <string name="time">الوقت</string>
+    <string name="describtion">الوصف</string>
+    <string name="weather">المناخ</string>
+</resources>
