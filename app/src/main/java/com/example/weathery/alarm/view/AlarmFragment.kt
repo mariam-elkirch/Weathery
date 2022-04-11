@@ -131,25 +131,25 @@ class AlarmFragment : Fragment() {
 
         @RequiresApi(api = Build.VERSION_CODES.O)
         fun findNextAlarm() {
-            // WorkManager.getInstance().cancelAllWorkByTag("alarms")
             val currentTime = Calendar.getInstance().timeInMillis
             Log.i("TAG", "current time$currentTime")
             var smallest = currentTime
             var scheduledAlarm: String? = null
+            var long:String?=null
+            var lat:String?=null
             var timeInMills: Long = 0
             Log.i("TAG", "alarm list $alarmsList")
             for (alarm in alarmsList) {
                 Log.i("TAG", " ")
                 Log.i("TAG", " ")
                 timeInMills = alarm.timemills
-                Log.i(
-                    "TAG",
-                    "In side findRestMills " + timeInMills + " " + (timeInMills - currentTime)
-                )
+
                 Log.i("TAG", "current time$currentTime")
                 if (timeInMills - currentTime >= 0 && timeInMills - currentTime < smallest) {
                     smallest = timeInMills - currentTime
                     scheduledAlarm = timeInMills.toString()
+                    long=alarm.longitude
+                    lat=alarm.latitude
                     Log.i("TAG", "FinfResut If $scheduledAlarm")
                 }
             }
@@ -158,6 +158,8 @@ class AlarmFragment : Fragment() {
                 Log.i("TAG", "In side smallest reminder method")
                 val finalTime = timeInMills - currentTime
                 val data = Data.Builder()
+                    .putString("long",long)
+                    .putString("lat",lat)
                     .build()
                 val reminderRequest = OneTimeWorkRequest.Builder(OneTimeWorker::class.java)
                     .setInitialDelay(finalTime, TimeUnit.MILLISECONDS)

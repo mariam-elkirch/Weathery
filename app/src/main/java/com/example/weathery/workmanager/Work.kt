@@ -32,27 +32,5 @@ class Work (context: Context, params: WorkerParameters): Worker(context, params)
     }
 
 
-    private fun displayNotification(keyword: String) {
-    //  Log.i("TAM", alarmList.+"Alarmlisttt")
-        val notificationManager = applicationContext
-            .getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                "RefillReminders",
-                "RefillReminders", NotificationManager.IMPORTANCE_DEFAULT
-            )
-            assert(notificationManager != null)
-            notificationManager.createNotificationChannel(channel)
-        }
-        val builder: NotificationCompat.Builder = NotificationCompat.Builder(
-            applicationContext, "RefillReminders"
-        )
-            .setContentTitle("$keyword Refill Alert")
-            .setContentText("It's time to refill your medication stock")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            // .setContentIntent(contentIntent)
-            .setSmallIcon(R.drawable.ic_cloud)
-        assert(notificationManager != null)
-        notificationManager.notify(1, builder.build())
-    }
+
 }

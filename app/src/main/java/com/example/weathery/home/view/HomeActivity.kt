@@ -29,6 +29,7 @@ class HomeActivity : AppCompatActivity() {
             Context.MODE_PRIVATE)
         editor =  sharedPreferences.edit()
        val sharedlanguage= sharedPreferences.getString("language","default")
+
         WorkManager.getInstance(this).cancelAllWorkByTag("periodic")
         val periodicRequest: PeriodicWorkRequest =
             PeriodicWorkRequest.Builder(Work::class.java, 4, TimeUnit.MINUTES)

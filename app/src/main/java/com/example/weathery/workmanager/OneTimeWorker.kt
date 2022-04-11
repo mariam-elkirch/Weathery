@@ -12,33 +12,39 @@ import androidx.core.app.NotificationCompat
 import androidx.work.*
 import com.example.weathery.R
 import com.example.weathery.alarm.view.AlarmFragment
+import com.example.weathery.model.RepositoryInterface
+import com.example.weathery.network.ApiManager
+import com.example.weathery.network.WebService
 import java.util.concurrent.TimeUnit
 
-class OneTimeWorker (context: Context, params: WorkerParameters): Worker(context, params)  {
+class OneTimeWorker (context: Context, params: WorkerParameters):CoroutineWorker(context,params)  {
+    override suspend fun doWork(): ListenableWorker.Result {
+        val data = inputData
+       // val _iRepo: RepositoryInterface = iRepo
+        val lat = data.getString("lat")
+        val long = data.getString("long")
+        val weatherApi= ApiManager.getClient()!!.create(WebService ::class.java)
+        // val responce= sportApi?.getWeather2("24.661994","5.167022","","272e72149cbb28b619e0d0a924024a41","metric","ar")
+     val responce=   weatherApi.getWeather2(lat,long,"minutely","272e72149cbb28b619e0d0a924024a41","metric","ar")!!
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    override  fun doWork(): Result {
-
-        Log.i("TAM","Courotine ")
-        displayNotification("mm")
-        AlarmFragment.findNextAlarm()
-       /* val request= OneTimeWorkRequest.Builder(OneTimeWorker::class.java).setInitialDelay(1,
-            TimeUnit.MINUTES).build()
-        this?.let { WorkManager.getInstance(applicationContext).enqueue(request) }*/
-      //  val sportApi= RetrofitHelper.getClient()?.create(RetrofitService ::class.java)
-       // val responce= sportApi?.getSports()
-       /* if (responce != null) {
+        if (responce != null) {
             if(responce.isSuccessful){
 
                 Log.i("TAG", "WorkManager"+responce.body()?.toString()+"WorkManager")
-
-
+                val desc=responce.body()?.alerts?.get(0)?.description
+                if(desc !=null ){
+                    displayNotification(desc)
+                }else {
+                    displayNotification("No Weather Alert")
+                }
             }
             else{
                 Log.i("TAG", responce.raw().toString()+"Fail")
             }
-        }*/
-        return  Result.success()
+        }
+
+        return  ListenableWorker.Result.success()
+
     }
     private fun displayNotification(keyword: String) {
 
@@ -55,8 +61,8 @@ class OneTimeWorker (context: Context, params: WorkerParameters): Worker(context
         val builder: NotificationCompat.Builder = NotificationCompat.Builder(
             applicationContext, "RefillReminders"
         )
-            .setContentTitle("$keyword Refill Alert")
-            .setContentText("It's time to refill your medication stock")
+            .setContentTitle("Weather Alert")
+            .setContentText("$keyword")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
            // .setContentIntent(contentIntent)
             .setSmallIcon(R.drawable.ic_cloud)
