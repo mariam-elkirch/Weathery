@@ -129,14 +129,30 @@ class WeatherFragment : Fragment() {
             Log.i("TAG",it.toString())
 
             viewModel.insertWeather(it)
+            temperature.setText(it.current?.temp.toString())
+            var local=Utilitis.getStringAddress(sharedlat,sharedlong,requireContext())
+            locality.setText(local)
+            var dt=Utilitis.convertDTtoHour(it.current?.dt)
+            var url = "https://openweathermap.org/img/wn/${it.current?.weather?.get(0)?.icon}@2x.png"
+            todaydate.setText(dt)
+            context?.let {
+                Glide.with(it).load(url)
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_foreground)
+                    .into(ivCurrentImg)
+            }
 
+            it.hourly?.let { it1 -> favDeyailsAdapterHour.setHourlyList(it1) }
+
+            it.daily?.let { it1 -> favDeyailsAdapter.setDailyList(it1) }
+            favDeyailsAdapter.notifyDataSetChanged()
 
            // Log.i("TAG","Locallllllll" +viewModel.localWeather().)
         })}
          viewModel.localWeather().observe(requireActivity()) { mywheather ->
              Log.i("TAG", "Observationnnnnnnnnnnnnnnnnnnnnnnnnnnnn: ${mywheather}")
             // Log.i("TAG","Hi from fav details"+mywheather.)
-             if(mywheather.size!=0){
+             if(mywheather.size!=0 && !Utilitis.isInternetAvailable(requireContext())){
                var local=Utilitis.getStringAddress(sharedlat,sharedlong,requireContext())
              temperature.setText(mywheather.get(0).current?.temp.toString())
              locality.setText(local)
