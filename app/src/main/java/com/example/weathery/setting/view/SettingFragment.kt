@@ -19,6 +19,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.weathery.R
 import com.example.weathery.location.viewmodel.LocationViewModel
 import com.example.weathery.location.view.MapsFragment
+import com.example.weathery.model.Utilitis
+import java.util.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -103,13 +105,13 @@ class SettingFragment : Fragment() {
         radio_group_lang.setOnCheckedChangeListener(
             RadioGroup.OnCheckedChangeListener { group, checkedId ->
                 val radio: RadioButton =view.findViewById(checkedId)
-                if(radio.text.equals("english")){
+                if(radio.text.equals("english")||radio.text.equals("الانجليزيه")){
                     editor.putString("lang","en")
                     editor.apply()
                     editor.commit()
                 }
 
-                if(radio.text.equals("arabic")){
+                if(radio.text.equals("arabic")||radio.text.equals("العربيه")){
                     editor.putString("lang","ar")
                     editor.apply()
                     editor.commit()
@@ -118,6 +120,15 @@ class SettingFragment : Fragment() {
             })
 
         val sharedNameValue = sharedPreferences.getString("lang","defaultname")
+        val sharedlanguage= sharedPreferences.getString("lang","default")
+        val config = this.resources.configuration
+
+        val locale = Locale(sharedlanguage)
+        Locale.setDefault(locale)
+        config.setLocale(locale)
+
+       context?.createConfigurationContext(config)
+        this.resources.updateConfiguration(config, this.resources.displayMetrics)
         Log.i("TAG",sharedNameValue+"My Shared Prefrence")
         return view
     }

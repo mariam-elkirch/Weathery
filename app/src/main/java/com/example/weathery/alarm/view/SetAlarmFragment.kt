@@ -190,7 +190,7 @@ class SetAlarmFragment : Fragment() {
            alarm.latitude= sharedLat!!
            alarm.timemills=Utilitis.convertTimeToLong(alarm.time)
            viewModel.insertAlarm(alarm)
-             if(alarm.time.equals("")||alarm.endDate.equals(1)||alarm.startDate.equals(1)||sharedLong.equals("default")){
+             if(sharedLat.equals("default")||sharedTime.equals("time")||sharedEnd.equals(1)||sharedStart.equals(1)){
                  Toast.makeText(context,"Enter All Fields", Toast.LENGTH_SHORT).show()
              }
            else{

@@ -174,7 +174,7 @@ class WeatherFragment : Fragment() {
          }
          }
         viewModel.errorMessage.observe(requireActivity(), {
-            Toast.makeText(contextt, it, Toast.LENGTH_SHORT).show()
+           // Toast.makeText(contextt, it, Toast.LENGTH_SHORT).show()
         })
 
         /*viewModel.loading.observe(this, Observer {

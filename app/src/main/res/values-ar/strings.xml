@@ -6,7 +6,7 @@
     <string name="alarms">المنبهات</string>
     <string name="Location">الموقع</string>
     <string name="where_are_you_going">الي اين انت ذاهب</string>
-    <string name="TemperatureWindspeed"><![CDATA[Temperature & Wind Speed]]></string>
+    <string name="TemperatureWindspeed">الحراره و سرعه الرياح</string>
     <string name="imperical">Temperature in Ferinheit and wind speed in miles/hour</string>
     <string name="metric">Temperature in celesius and wind speed in meters/sec</string>
     <string name="standard">Temperature in Kelvin and Wind speed in meter/sec</string>

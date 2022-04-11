@@ -25,7 +25,7 @@
                 android:id="@+id/radio_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#dbeceb"
+                android:background="@color/purple_700"
                 android:padding="15dp"
               >
 
@@ -34,10 +34,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/Location"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     android:textSize="20sp"/>
 
                 <RadioButton
+                    android:textColor="@color/white"
                     android:id="@+id/gps_radiobtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -45,6 +47,7 @@
                   />
 
                 <RadioButton
+                    android:textColor="@color/white"
                     android:id="@+id/map_radiobtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -70,7 +73,7 @@
                 android:id="@+id/radio_group_temp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#dbeceb"
+                android:background="@color/purple_700"
                 android:padding="15dp"
                 >
 
@@ -80,12 +83,14 @@
                     android:layout_height="wrap_content"
                     android:text="@string/TemperatureWindspeed"
                     android:textStyle="bold"
+                    android:textColor="@color/white"
                     android:textSize="20sp"/>
 
                 <RadioButton
                     android:id="@+id/imperical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/white"
                     android:text="@string/imperical"
                     />
 
@@ -93,12 +98,14 @@
                     android:id="@+id/metric"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/white"
                     android:text="@string/metric"
                     />
                 <RadioButton
                     android:id="@+id/standard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/white"
                     android:text="@string/standard"
                     />
 
@@ -118,7 +125,7 @@
                 android:id="@+id/radio_group_lang"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#dbeceb"
+                android:background="@color/purple_700"
                 android:padding="15dp"
                 >
 
@@ -127,6 +134,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/Language"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     android:textSize="20sp"/>
 
@@ -135,6 +143,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/english"
+                    android:textColor="@color/white"
                     />
 
                 <RadioButton
@@ -142,6 +151,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/arabic"
+                    android:textColor="@color/white"
                     />
 
             </RadioGroup>

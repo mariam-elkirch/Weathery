@@ -1,6 +1,9 @@
 package com.example.weathery.model
 
 import android.content.Context
+import android.content.Intent
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.location.Address
 import android.location.Geocoder
 
@@ -39,6 +42,15 @@ class Utilitis {
             }
 
             return addressText
+        }
+        fun changeLanguage(lang:String, context: Context){
+            val locale = Locale(lang)
+            Locale.setDefault(locale)
+            val resources: Resources = context.resources
+            val config: Configuration = resources.configuration
+            config.setLocale(locale)
+            resources.updateConfiguration(config, resources.displayMetrics)
+
         }
         fun getStringAddress(lat:String?,long:String?,context: Context): String {
 

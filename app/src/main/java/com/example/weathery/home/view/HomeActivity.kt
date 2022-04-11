@@ -2,6 +2,7 @@ package com.example.weathery.home.view
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -13,11 +14,14 @@ import com.example.weathery.favourite.view.FavouriteFragment
 import com.example.weathery.setting.view.SettingFragment
 
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.util.*
 
 class HomeActivity : AppCompatActivity() {
     lateinit var bottomNav : BottomNavigationView
     lateinit var sharedPreferences: SharedPreferences
     lateinit var editor: SharedPreferences.Editor
+    var context: Context? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -25,8 +29,15 @@ class HomeActivity : AppCompatActivity() {
         sharedPreferences = this.getSharedPreferences("Setting",
             Context.MODE_PRIVATE)
         editor =  sharedPreferences.edit()
-       val sharedlanguage= sharedPreferences.getString("language","default")
+       val sharedlanguage= sharedPreferences.getString("lang","default")
+        val config = this.resources.configuration
 
+        val locale = Locale(sharedlanguage)
+        Locale.setDefault(locale)
+        config.setLocale(locale)
+
+        this.createConfigurationContext(config)
+        this.resources.updateConfiguration(config, this.resources.displayMetrics)
 
         Log.i("TAG", "In side periodic request setter"+sharedlanguage)
 
