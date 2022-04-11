@@ -138,7 +138,7 @@ class SetAlarmFragment : Fragment() {
             val args = Bundle()
             args.putString("alert","alert")
             parentFragmentManager.setFragmentResult("alert",args)
-            transaction?.addToBackStack(null)?.add(R.id.container, MapsFragment())
+            transaction?.addToBackStack(null)?.replace(R.id.container, MapsFragment())
             transaction?.commit()
         }
         time_tv.setOnClickListener {

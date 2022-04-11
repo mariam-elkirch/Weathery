@@ -22,7 +22,7 @@ class Work (context: Context, params: WorkerParameters): Worker(context, params)
     @RequiresApi(Build.VERSION_CODES.O)
     override fun doWork(): Result {
         Log.i("TAM","ONE Tme")
-        AlarmFragment.findNextAlarm()
+      //  AlarmFragment.findNextAlarm()
       //  displayNotification("")
       /*  val request= OneTimeWorkRequest.Builder(OneTimeWorker::class.java).setInitialDelay(1,
             TimeUnit.MINUTES).build()

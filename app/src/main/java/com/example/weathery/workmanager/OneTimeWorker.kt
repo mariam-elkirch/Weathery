@@ -42,7 +42,17 @@ class OneTimeWorker (context: Context, params: WorkerParameters):CoroutineWorker
                 Log.i("TAG", responce.raw().toString()+"Fail")
             }
         }
-
+        WorkManager.getInstance(applicationContext).cancelAllWorkByTag("periodic")
+        val periodicRequest: PeriodicWorkRequest =
+            PeriodicWorkRequest.Builder(Work::class.java, 24, TimeUnit.HOURS)
+                .setInitialDelay(24, TimeUnit.HOURS) //each 3 min
+                .addTag("periodic")
+                .build()
+        WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
+            "Mariam",
+            ExistingPeriodicWorkPolicy.REPLACE,
+            periodicRequest
+        )
         return  ListenableWorker.Result.success()
 
     }

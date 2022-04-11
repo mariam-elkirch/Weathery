@@ -12,6 +12,8 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
@@ -19,6 +21,7 @@ import com.example.weathery.R
 import com.example.weathery.alarm.viewmodel.AlarmViewModel
 import com.example.weathery.alarm.viewmodel.AlarmViewModelFactory
 import com.example.weathery.db.ConcreteLocalSource
+import com.example.weathery.favourite.view.FavouriteAdapter
 import com.example.weathery.model.Alarm
 import com.example.weathery.model.Repository
 import com.example.weathery.network.Client
@@ -42,6 +45,8 @@ class AlarmFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     var contextt: Context? = null
+    lateinit var recyclerView: RecyclerView
+    lateinit var alarmAdapter: AlarmAdapter
     lateinit var viewModel: AlarmViewModel
     lateinit var allalarmfactory: AlarmViewModelFactory
     lateinit var sharedPreferences: SharedPreferences
@@ -63,6 +68,13 @@ class AlarmFragment : Fragment() {
     ): View? {
         var view=inflater.inflate(R.layout.fragment_alarm, container, false)
         contextt=container?.context
+        recyclerView=view.findViewById(R.id.recycler_view_alarm)
+        alarmAdapter = context?.let { AlarmAdapter(contextt!!) }!!
+
+        val linearLayoutManager = LinearLayoutManager(context)
+        linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
+        recyclerView.layoutManager = linearLayoutManager
+        recyclerView.adapter = alarmAdapter
        allalarmfactory= AlarmViewModelFactory(
             Repository.getInstance(
                 Client.getInstance(),
@@ -96,13 +108,14 @@ class AlarmFragment : Fragment() {
             myalarm.startDate=start
             myalarm.time=t
             viewModel.getAlarms().observe(viewLifecycleOwner){ alarms ->
-                if(alarms != null)
+                if(alarms != null) {
                     setAlarmsListForManager(alarms)
                     findNextAlarm()
-                   // FindNextAlarm.setContext(contextt!!)
-                   // FindNextAlarm.alarmList=alarms
-                 Log.i("TAM",alarms.get(1).latitude+"inside Alarmssssssss")
-                   // favMoviesAdapter.setMovieList(favourites)
+                    alarmAdapter.setAlarmList(alarms)
+                    // FindNextAlarm.setContext(contextt!!)
+                    // FindNextAlarm.alarmList=alarms
+                    Log.i("TAM", alarms.get(1).latitude + "inside Alarmssssssss")
+                }   // favMoviesAdapter.setMovieList(favourites)
                // favMoviesAdapter.notifyDataSetChanged()
             }
            // Log.i("TAG",vi)
@@ -124,7 +137,7 @@ class AlarmFragment : Fragment() {
         transaction?.commit()
     }
     companion object {
-        lateinit var alarmsList: List<Alarm>
+       lateinit var alarmsList: List<Alarm>
         fun setAlarmsListForManager(alarmsList: List<Alarm>) {
             this.alarmsList = alarmsList
         }
@@ -138,7 +151,7 @@ class AlarmFragment : Fragment() {
             var long:String?=null
             var lat:String?=null
             var timeInMills: Long = 0
-            Log.i("TAG", "alarm list $alarmsList")
+         //   Log.i("TAG", "alarm list $alarmsList")
             for (alarm in alarmsList) {
                 Log.i("TAG", " ")
                 Log.i("TAG", " ")

@@ -30,17 +30,7 @@ class HomeActivity : AppCompatActivity() {
         editor =  sharedPreferences.edit()
        val sharedlanguage= sharedPreferences.getString("language","default")
 
-        WorkManager.getInstance(this).cancelAllWorkByTag("periodic")
-        val periodicRequest: PeriodicWorkRequest =
-            PeriodicWorkRequest.Builder(Work::class.java, 4, TimeUnit.MINUTES)
-                .setInitialDelay(10, TimeUnit.SECONDS) //each 3 min
-                .addTag("periodic")
-                .build()
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-            "Mariam",
-            ExistingPeriodicWorkPolicy.REPLACE,
-            periodicRequest
-        )
+
         Log.i("TAG", "In side periodic request setter"+sharedlanguage)
 
         loadFragment(WeatherFragment())
