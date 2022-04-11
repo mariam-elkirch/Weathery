@@ -5,17 +5,14 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.work.*
 import com.example.weathery.R
 import com.example.weathery.alarm.view.AlarmFragment
 import com.example.weathery.favourite.view.FavouriteFragment
 import com.example.weathery.setting.view.SettingFragment
-import com.example.weathery.workmanager.Work
 
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import java.util.concurrent.TimeUnit
 
 class HomeActivity : AppCompatActivity() {
     lateinit var bottomNav : BottomNavigationView

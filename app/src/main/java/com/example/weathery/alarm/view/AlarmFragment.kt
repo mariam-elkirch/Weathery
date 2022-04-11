@@ -114,7 +114,7 @@ class AlarmFragment : Fragment() {
                     alarmAdapter.setAlarmList(alarms)
                     // FindNextAlarm.setContext(contextt!!)
                     // FindNextAlarm.alarmList=alarms
-                    Log.i("TAM", alarms.get(1).latitude + "inside Alarmssssssss")
+                 //   Log.i("TAM", alarms.get(1).latitude + "inside Alarmssssssss")
                 }   // favMoviesAdapter.setMovieList(favourites)
                // favMoviesAdapter.notifyDataSetChanged()
             }

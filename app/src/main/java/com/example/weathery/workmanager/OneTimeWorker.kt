@@ -44,7 +44,7 @@ class OneTimeWorker (context: Context, params: WorkerParameters):CoroutineWorker
         }
         WorkManager.getInstance(applicationContext).cancelAllWorkByTag("periodic")
         val periodicRequest: PeriodicWorkRequest =
-            PeriodicWorkRequest.Builder(Work::class.java, 24, TimeUnit.HOURS)
+            PeriodicWorkRequest.Builder(OneTimeWorker::class.java, 24, TimeUnit.HOURS)
                 .setInitialDelay(24, TimeUnit.HOURS) //each 3 min
                 .addTag("periodic")
                 .build()
