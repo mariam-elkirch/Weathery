@@ -178,11 +178,11 @@ class SetAlarmFragment : Fragment() {
 
            args.putLong("end",alarm.endDate)
            args.putString("time",alarm.time)
-           val sharedLong=sharedPreferences.getString("longAlarm","default")
-           val sharedLat=sharedPreferences.getString("latAlarm","default")
-           val sharedEnd=sharedPreferences.getLong("end_date",1)
-           val sharedStart=sharedPreferences.getLong("start_date",1)
-           val sharedTime=sharedPreferences.getString("time","time")
+           val sharedLong=sharedPreferences.getString("longAlarm","29.924526")
+           val sharedLat=sharedPreferences.getString("latAlarm","31.205753")
+           val sharedEnd=sharedPreferences.getLong("end_date",1649714400000)
+           val sharedStart=sharedPreferences.getLong("start_date",1649973600000)
+           val sharedTime=sharedPreferences.getString("time","06:12 PM")
            alarm.endDate=sharedEnd
            alarm.time= sharedTime!!
            alarm.startDate=sharedStart

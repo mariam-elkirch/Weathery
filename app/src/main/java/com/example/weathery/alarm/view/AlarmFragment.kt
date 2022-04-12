@@ -112,6 +112,7 @@ class AlarmFragment : Fragment() {
                     setAlarmsListForManager(alarms)
                     findNextAlarm()
                     alarmAdapter.setAlarmList(alarms)
+                    alarmAdapter.notifyDataSetChanged()
                     // FindNextAlarm.setContext(contextt!!)
                     // FindNextAlarm.alarmList=alarms
                  //   Log.i("TAM", alarms.get(1).latitude + "inside Alarmssssssss")

@@ -78,7 +78,7 @@ class Utilitis {
         }
      fun convertDayToData(dt: Double?):String{
              val date = Date((dt!! *1000).toLong())
-             val format = SimpleDateFormat("EEE",Locale.ENGLISH)
+             val format = SimpleDateFormat("EEE")
              return format.format(date)
          }
       fun  convertDTtoHour(dt:Int?) :String{
